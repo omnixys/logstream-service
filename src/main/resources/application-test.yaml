@@ -1,0 +1,22 @@
+spring:
+  
+  flyway:
+      clean-disabled: false
+      locations: classpath:db/migration/test
+
+  config:
+    activate:
+      on-profile: test
+
+# Applikationsspezifische Einstellungen
+app:
+  server:
+    port: ${TEST_SERVER_PORT}
+  postgres:
+    url: jdbc:postgresql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_TEST_DB}
+    username: ${MYSQL_USERNAME}
+    password: ${MYSQL_PASSWORD}
+  http2:
+   enabled: false
+  ssl:
+   enabled: false

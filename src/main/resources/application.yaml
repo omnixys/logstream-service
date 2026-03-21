@@ -1,0 +1,169 @@
+# Gemeinsame Konfiguration
+server:
+  http2:
+    enabled: ${app.http2.enabled}
+  ssl:
+    enabled: ${app.ssl.enabled}
+    bundle: microservice
+  port: ${app.server.port}
+  compression:
+    enabled: true
+    mime-types: application/hal+json
+    min-response-size: 2KB
+  error:
+    whitelabel:
+      enabled: false
+  shutdown: graceful
+
+management:
+  metrics:
+    enable:
+      all: true
+  endpoints:
+    health:
+      probes:
+        enabled: true
+    prometheus:
+      enabled: true
+    web:
+      exposure:
+        include:
+          - prometheus
+          - health
+          - info
+          - metrics
+  tracing:
+    sampling:
+      probability: 1.0
+  otlp:
+    tracing:
+      endpoint: http://${app.tracing.tempo}:4318/v1/traces
+
+logstream:
+  kafka:
+    topics:
+      - logstream.authentication
+      - logstream.event
+      - logstream.user
+      - logstream.invitation
+      - logstream.seat
+      - logstream.notification
+  loki:
+    url: http://localhost:3100/loki/api/v1/push
+  retry:
+    attempts: 3
+
+# Spring Boot Einstellungen
+spring:
+  data:
+    redis:
+      host: ${app.valkey.host}
+      port: ${app.valkey.port}
+      password: ${app.valkey.password}
+      timeout: 2s
+  kafka:
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    consumer:
+      group-id: ${app.groupId}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+  checkpoint.restore: onRefresh
+
+  graphql:
+    graphiql:
+      enabled: true
+    schema:
+      printer:
+        enabled: true
+
+  profiles:
+    active: ${app.env}
+
+  application:
+    name: logstream-service
+    version: 26.02.17
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${app.keycloak.uri}
+
+
+# Applikationsspezifische Einstellungen
+app:
+  seed:
+    enabled: false
+  version: ${spring.application.version}
+  name: ${spring.application.name}
+  groupId: omnixys-${spring.application.name}
+  env: ${ACTIVE_PROFILE:dev}
+  password: p
+  keycloak:
+    uri: ${KC_SERVICE_URI}
+    protocol: ${KC_SERVICE_PROTOCOL}
+    client-secret: ${KC_SERVICE_SECRET}
+    host: ${KC_SERVICE_HOST}
+    port: ${KC_SERVICE_PORT}
+    realm: ${KC_SERVICE_REALM}
+    client-id: ${KC_SERVICE_CLIENT_ID}
+
+  valkey:
+    host: ${VALKEY_HOST}
+    port: ${VALKEY_PORT}
+    password: ${VALKEY_PASSWORD}
+
+  tracing:
+    tempo: ${TEMPO_HOST}
+
+  kafka:
+    host: ${KAFKA_HOST}
+    port: ${KAFKA_PORT}
+
+# Logging-Konfiguration
+logging:
+  file.name: ./tmp/application.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: ${logging.file.name}.%d{yyyy-MM-dd}.%i.gz
+      max-file-size: 100KB
+      max-history: 3
+  pattern:
+    console: >
+      %clr(%date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX}){faint} %clr(%5level) %clr(${PID:- }){magenta}
+      %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{39}){cyan}
+      %clr(:){faint} %msg%n%wEx
+    file: >
+      %date{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %5level ${PID:- } --- [%thread]
+      %-40.40logger{39} : %m%n%wEx
+  level:
+    com.omnixys.logstream: trace
+    org.apache.catalina.loader.WebappClassLoaderBase: info
+    org.springframework.boot.availability.ApplicationAvailabilityBean: debug
+    org.springframework.boot.devtools.autoconfigure.ConditionEvaluationDeltaLoggingListener: warn
+    org.springframework.security.core.userdetails.User: error
+    org.springframework.security.web.server.authorization.AuthorizationWebFilter: trace
+    org.springframework.web.reactive.function.client.ExchangeFunctions: trace
+    org.springframework.web.service.invoker.PathVariableArgumentResolver: trace
+    org.springframework.web.service.invoker.RequestHeaderArgumentResolver: trace
+    org.springframework.web.servlet.DispatcherServlet: debug
+    org.springframework.web.servlet.mvc.method.annotation.HttpEntityMethodProcessor: debug
+    org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping: debug
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: error
+    io.micrometer.observation.contextpropagation.ObservationThreadLocalAccessor: error
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+    org.hibernate.SQL_SLOW: warn
+    org.flywaydb.core.internal.sqlscript.DefaultSqlScriptExecutor: debug
+    io.qameta.allure.AllureLifecycle: fatal
+    org.junit.jupiter.engine.descriptor.TestInstanceLifecycleUtils: warn
+    org.springframework.boot.test.context.SpringBootTestContextBootstrapper: warn
+    org.springframework.test.context.support.AbstractContextLoader: warn
+    org.springframework.test.context.support.AnnotationConfigContextLoaderUtils: warn
+    org.springframework.test.context.support.DefaultTestContextBootstrapper: warn
+    org.springframework.data.mongodb: debug
+    org.junit.jupiter: warn
+
+    # org.springframework.graphql: debug

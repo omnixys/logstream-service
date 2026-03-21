@@ -1,0 +1,70 @@
+
+# table = Schluessel/Wert-Paare
+[versions]
+javaVersion = "25"
+
+springBoot = "4.0.3"
+springBootPlugin = "4.0.3"
+bouncycastle = "1.83"
+lombokMapstructBinding = "0.2.0"
+mapstruct = "1.6.3"
+springdocOpenapi = "2.3.0"
+springAddonsStarterOidc = "7.8.1"
+dotenv = "3.2.0"
+
+# -----------------------------------------------------------------------------------------
+# B O M s   u n d   s p e z i f i s c h e   V e r s i o n e n   u e b e r s c h r e i b e n
+# -----------------------------------------------------------------------------------------
+antlr4 = "4.13.1"
+flyway = "10.6.0"
+hibernateJpamodelgen = "8.0.0.Alpha1"
+jackson = "2.16.1"
+lombok = "1.18.44"
+guava = "33.4.0-jre"
+
+# ----------------------------------------------------------------------------------------
+# Q S ,   R e p o r t s ,   D o k u m e n t a t i o n
+# ----------------------------------------------------------------------------------------
+checkstyle = "10.17.0"
+errorprone = "2.28.0"
+modernizer = "2.9.0"
+spotbugs = "4.8.5"
+
+# ----------------------------------------------------------------------------------------
+# T e s t e n
+# ----------------------------------------------------------------------------------------
+
+springBootTest = "3.3.4"
+httpclient5 = "5.4.1"
+httpcore5 = "5.3.2"
+
+# ----------------------------------------------------------------------------------------
+# C o d e a n a l y s e ,   R e p o r t s ,   D o k u m e n t a t i o n
+# ----------------------------------------------------------------------------------------
+allureJunit = "2.27.0"
+allureCommandline = "2.29.0"
+asciidoctorj = "2.5.12"
+asciidoctorjDiagram = "2.3.0"
+asciidoctorjPdf = "2.3.17"
+aspectjweaver = "1.9.9.1"
+jruby = "9.4.6.0"
+jacoco = "0.8.12"
+
+
+# ----------------------------------------------------------------------------------------
+# P l u g i n s
+# ----------------------------------------------------------------------------------------
+dependencyManagement = "1.1.7"
+nwillcVPlugin = "3.0.5"
+benManesVersions = "0.51.0"
+markelliotVersions = "0.43.0"
+spotbugsPlugin = "6.0.15"
+spotless = "7.0.0.BETA1"
+modernizerPlugin = "1.9.2"
+allurePlugin = "2.11.2"
+asciidoctor = "4.0.2"
+dependencyAnalysis = "1.20.0"
+errorpronePlugin = "4.0.0"
+licenseReport = "2.8"
+sweeney = "4.6.17"
+testLogger = "4.0.0"

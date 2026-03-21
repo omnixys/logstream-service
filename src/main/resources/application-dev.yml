@@ -1,0 +1,47 @@
+spring:
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      trigger-file: .reloadtrigger
+
+  config:
+    activate:
+      on-profile: dev
+
+  ssl:
+    bundle:
+      pem:
+        microservice:
+          reload-on-update: true
+          keystore:
+            private-key: "${app.keys.path}/key.pem"
+            certificate: "${app.keys.path}/certificate.crt"
+          truststore:
+            certificate: "${app.keys.path}/certificate.crt"
+
+# Applikationsspezifische Einstellungen
+app:
+  geoapify:
+    apiKey: ${GEOAPIFY_KEY}
+  seed:
+    enabled: true
+  states:
+    api:
+      key: ${CSC_API_KEY}
+  server:
+    port: ${SERVER_PORT}
+
+  postgres:
+    url: jdbc:postgresql://${POSTGRES_SQL_HOST}:${POSTGRES_SQL_PORT}/${POSTGRES_SQL_DB}?currentSchema=address,public
+    username: ${POSTGRES_SQL_USERNAME}
+    password: ${POSTGRES_SQL_PASSWORD}
+
+  keys:
+    path: ${KEYS_PATH}
+
+  http2:
+    enabled: ${HTTPS:true}
+
+  ssl:
+    enabled: ${HTTPS:true}
