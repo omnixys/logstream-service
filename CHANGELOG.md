@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.0.2](https://github.com/omnixys/logstream-service/compare/v1.0.1...v1.0.2) (2026-03-22)
+
+### Ci
+
+* **Ci:** Update ci.yaml ([](https://github.com/omnixys/logstream-service/commit/37f198439e24856efd0f2de04951137d0513223a))
+
+### Other
+
+* **Other:** Merge branch 'main' of https://github.com/omnixys/logstream-service ([](https://github.com/omnixys/logstream-service/commit/359959b44520c1939e87d958f7457f6f44bb6f9a))
+
 ## [1.0.1](https://github.com/omnixys/logstream-service/compare/v1.0.0...v1.0.1) (2026-03-22)
 
 ### Docker
