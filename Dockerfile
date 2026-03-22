@@ -50,7 +50,6 @@ LABEL org.opencontainers.image.title="${APP_NAME}-service" \
 WORKDIR /workspace
 
 RUN apt-get update && \
-    apt-get upgrade --yes && \
     apt-get install --no-install-recommends --yes dumb-init=1.2.5-2 wget && \
     apt-get autoremove -y && \
     apt-get clean -y && \
