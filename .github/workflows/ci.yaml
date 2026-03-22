@@ -127,22 +127,19 @@ jobs:
             echo "released=false" >> $GITHUB_OUTPUT
           fi
 
-  # =========================================
-  # 3️⃣ DOCKER BUILD & PUSH
-  # =========================================
-  docker:
-    name: 🐳 Docker Build & Push (Multi-Arch)
+  push-docker:
+    name: 🐳 Build & Push Multi-Arch Images (Docker)
     runs-on: ubuntu-latest
-    needs: release
 
+    needs: release
     if: needs.release.outputs.released == 'true'
 
     strategy:
       matrix:
-        java-version: [ 25 ]
+        java-version: [25]
 
     steps:
-      - name: 🧾 Checkout
+      - name: 🧾 Checkout repository
         uses: actions/checkout@v4
 
       - name: ☕ Setup Java
@@ -151,9 +148,6 @@ jobs:
           distribution: zulu
           java-version: ${{ matrix.java-version }}
 
-      # -------------------------------
-      # Extract Version
-      # -------------------------------
       - name: 📦 Extract version
         run: |
           VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
@@ -171,39 +165,27 @@ jobs:
           GPR_USER: ${{ github.actor }}
           GPR_KEY: ${{ secrets.OMNIXYS_TOKEN }}
 
-      # -------------------------------
-      # Docker Setup
-      # -------------------------------
-      - name: 🔧 Setup Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          driver-opts: image=moby/buildkit:latest
 
-      - name: 🔑 Login DockerHub
+      - name: 🔑 Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: 🔑 Login GHCR
-        uses: docker/login-action@v3
+      - name: Set up Docker Cache
+        uses: actions/cache@v4
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          path: /tmp/.buildx-cache
+          key: buildx-${{ github.sha }}
+          restore-keys: |
+            buildx-
 
-      # -------------------------------
-      # Build & Push
-      # -------------------------------
-      - name: 🐳 Build & Push (DockerHub)
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          platforms: linux/amd64,linux/arm64
-          tags: |
-            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:${{ env.CURRENT_VERSION }}
-            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:latest
-
-      - name: 🐳 Build & Push (GHCR)
+      - name: Build and Push Docker Image (Multi-Arch)
         uses: docker/build-push-action@v5
         with:
           secrets: |
@@ -213,8 +195,8 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ github.repository }}:${{ env.CURRENT_VERSION }}
-            ghcr.io/${{ github.repository }}:latest
+            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:${{ env.CURRENT_VERSION }}
+            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.version=${{ env.CURRENT_VERSION }}
@@ -229,13 +211,102 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
-      # -------------------------------
-      # Sign Images
-      # -------------------------------
-      - name: 🔐 Install cosign
+      - name: Install cosign
         uses: sigstore/cosign-installer@v3
 
-      - name: 🔐 Sign images
+      - name: Sign Docker Image with cosign (OIDC/GitHub)
         run: |
-          cosign sign --yes ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:${{ env.CURRENT_VERSION }}
-          cosign sign --yes ghcr.io/${{ github.repository }}:${{ env.CURRENT_VERSION }}
+          cosign sign --yes --recursive ${{ env.IMAGE_NAME }}:${{ env.CURRENT_VERSION }}
+          cosign sign --yes --recursive ${{ env.IMAGE_NAME }}:latest
+
+  push-github:
+    name: 🐳 Build & Push Multi-Arch Images (Github)
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java-version: [25]
+    
+    if: needs.release.outputs.released == 'true'
+    needs: release
+
+    steps:
+      - name: 🧾 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: ${{ matrix.java-version }}
+
+      - name: 📦 Extract version
+        run: |
+          VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
+          echo "CURRENT_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "CURRENT_DATE=$(date -u +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: 🔐 Configure Gradle credentials for GitHub Packages
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/gradle.properties
+          gpr.user=${GPR_USER}
+          gpr.key=${GPR_KEY}
+          EOF
+        env:
+          GPR_USER: ${{ github.actor }}
+          GPR_KEY: ${{ secrets.OMNIXYS_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          driver-opts: image=moby/buildkit:latest
+
+      - name: Log in to GitHub Container Registry (GHCR)
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Set up Docker Cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache
+          key: buildx-${{ github.sha }}
+          restore-keys: |
+            buildx-
+
+      - name: Build and Push Docker Image (GHCR)
+        uses: docker/build-push-action@v5
+        with:
+          secrets: |
+            omnixys_token=${{ env.OMNIXYS_TOKEN }}
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ env.IMAGE_NAME_REPOSITORY }}:${{ env.CURRENT_VERSION }}
+            ${{ env.IMAGE_NAME_REPOSITORY }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ env.CURRENT_VERSION }}
+            org.opencontainers.image.description=Omnixys Microservice – ${{ env.IMAGE_NAME }}
+            org.opencontainers.image.licenses=GPL-3.0-or-later
+          build-args: |
+            REVISION=${{ github.sha }}
+            CREATED=${{ env.CURRENT_DATE }}
+            APP_VERSION=${{ env.CURRENT_VERSION }}
+            APP_NAME=${{ vars.SERVICE }}
+            JAVA_VERSION=${{ matrix.java-version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Sign Docker Image with cosign (OIDC/GitHub)
+        run: |
+          cosign sign --yes --recursive ${{ env.IMAGE_NAME_REPOSITORY }}:${{ env.CURRENT_VERSION }}
+          cosign sign --yes --recursive ${{ env.IMAGE_NAME_REPOSITORY }}:latest
