@@ -20,6 +20,9 @@ permissions:
   id-token: write
 
 env:
+  COSIGN_EXPERIMENTAL: 'true'
+  IMAGE_NAME: ${{ secrets.DOCKER_USER }}/${{ vars.SERVICE }}-service
+  IMAGE_NAME_REPOSITORY: ghcr.io/${{ github.repository }}
   SERVICE: ${{ vars.SERVICE }}
   CURRENT_VERSION: ${{ vars.CURRENT_VERSION }}
 
@@ -67,9 +70,6 @@ jobs:
       - name: 📦 Build
         run: ./gradlew build --stacktrace
 
-  # =========================================
-  # 2️⃣ RELEASE (semantic-release + Gradle version)
-  # =========================================
   release:
     name: 🚀 Release (semantic-release)
     runs-on: ubuntu-latest
@@ -126,6 +126,7 @@ jobs:
           else
             echo "released=false" >> $GITHUB_OUTPUT
           fi
+
 
   push-docker:
     name: 🐳 Build & Push Multi-Arch Images (Docker)
@@ -195,8 +196,8 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:${{ env.CURRENT_VERSION }}
-            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:latest
+            ${{ env.IMAGE_NAME }}:${{ env.CURRENT_VERSION }}
+            ${{ env.IMAGE_NAME }}:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.version=${{ env.CURRENT_VERSION }}
@@ -218,6 +219,7 @@ jobs:
         run: |
           cosign sign --yes --recursive ${{ env.IMAGE_NAME }}:${{ env.CURRENT_VERSION }}
           cosign sign --yes --recursive ${{ env.IMAGE_NAME }}:latest
+
 
   push-github:
     name: 🐳 Build & Push Multi-Arch Images (Github)
@@ -282,7 +284,8 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           secrets: |
-            omnixys_token=${{ env.OMNIXYS_TOKEN }}
+            gpr_user=${{ github.actor }}
+            gpr_key=${{ secrets.OMNIXYS_TOKEN }}
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
