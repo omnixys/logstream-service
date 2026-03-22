@@ -46,11 +46,31 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven(url = "https://projectlombok.org/mavenrepo") // Nightly Repo
+
+    maven {
+        name = "github-bom"
+        url = uri("https://maven.pkg.github.com/omnixys/omnixys-starter-java")
+
+        credentials {
+            username = project.findProperty("gpr.user") as String?
+            password = project.findProperty("gpr.key") as String?
+        }
+    }
+
+    maven {
+        name = "github-starter"
+        url = uri("https://maven.pkg.github.com/omnixys/omnixys-bom")
+
+        credentials {
+            username = project.findProperty("gpr.user") as String?
+            password = project.findProperty("gpr.key") as String?
+        }
+    }
 }
+
 dependencyManagement {
     imports {
-        mavenBom("io.opentelemetry.instrumentation:opentelemetry-instrumentation-bom:2.15.0")
+        mavenBom("com.omnixys:omnixys-bom:1.0.0")
     }
 }
 
@@ -58,6 +78,8 @@ extra["springCloudVersion"] = "2024.0.1"
 
 
 dependencies {
+    implementation("com.omnixys:omnixys-starter")
+
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     /**--------------------------------------------------------------------------------------------------------------------
      * SECURITY
@@ -83,14 +105,11 @@ dependencies {
      * --------------------------------------------------------------------------------------------------------------------*/
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.graphql:spring-graphql-test")
-    testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("org.springframework.security:spring-security-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework:spring-webflux")
-    testImplementation("org.springframework.boot:spring-boot-micrometer-tracing-test")
     testImplementation("org.springframework.boot:spring-boot-starter-actuator-test")
     testImplementation("org.springframework.boot:spring-boot-starter-hateoas-test")
-    testImplementation("org.springframework.boot:spring-boot-starter-opentelemetry-test")
     testImplementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
 
@@ -102,8 +121,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
-    implementation("org.springframework.boot:spring-boot-starter-kafka")
-    implementation("org.springframework.boot:spring-boot-starter-opentelemetry")
     implementation("org.springframework.boot:spring-boot-starter-json")
 
     /**------------------------------------------------------------------------------------------------------------------------
@@ -117,34 +134,10 @@ dependencies {
     /**------------------------------------------------------------------------------------------------------------------------
      * MESSANGER
      * --------------------------------------------------------------------------------------------------------------------*/
-    implementation("org.springframework.kafka:spring-kafka")
     implementation("com.fasterxml.jackson.core:jackson-databind")
     implementation("com.fasterxml.jackson.module:jackson-module-parameter-names")
 
-    /**------------------------------------------------------------------------------------------------------------------------
-     * OBSERVABILITY
-     * --------------------------------------------------------------------------------------------------------------------*/
-    implementation("io.micrometer:micrometer-registry-otlp")
-
-    implementation("io.opentelemetry:opentelemetry-exporter-otlp")
-
-    // --- Micrometer Basis ---
-    implementation("io.micrometer:micrometer-observation")
-    implementation("io.micrometer:micrometer-tracing")
-
-    // --- Bridge zu OpenTelemetry ---
-    implementation("io.micrometer:micrometer-tracing-bridge-otel")
-
-    // --- Micrometer Prometheus Export ---
-    runtimeOnly("io.micrometer:micrometer-registry-prometheus")
-
-    implementation("org.springframework.boot:spring-boot-micrometer-tracing-brave")
-    implementation("io.micrometer:micrometer-tracing-bridge-brave")
-
-
-    implementation(platform("com.google.protobuf:protobuf-bom:4.34.0"))
 // cache
-
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
 

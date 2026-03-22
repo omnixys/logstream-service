@@ -1,312 +1,702 @@
-2026-03-20T13:09:21.072+01:00 TRACE 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.w.r.f.client.ExchangeFunctions       : [525e0f40] HTTP POST http://localhost:3100/loki/api/v1/push, headers={}
+2026-03-22T13:13:00.215+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:21.077+01:00 TRACE 9383 --- [reactor-http-nio-2] o.s.w.r.f.client.ExchangeFunctions       : [525e0f40] [46d4ec9d-74] Response 204 NO_CONTENT, headers={masked}
+2026-03-22T13:13:00.215+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:21.082+01:00 ERROR 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] c.o.l.kafka.KafkaConsumerService         : Kafka log processing failed for topic=authentication.send.logstream partition=0 offset=26 -> skipping message
+2026-03-22T13:13:00.215+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] (Re-)joining group
 
-com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "eventId" (class com.omnixys.logstream.kafka.EventEnvelope), not marked as ignorable (4 known properties: "version", "event", "service", "payload"])
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 721] (through reference chain: com.omnixys.logstream.kafka.EventEnvelope["eventId"])
-	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1208) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2380) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1823) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperties(BeanDeserializerBase.java:1773) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeUsingPropertyBased(BeanDeserializer.java:573) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1499) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:340) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:5038) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:4032) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.processLogEvent(KafkaConsumerService.java:101) ~[main/:na]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.consumeLogEvent(KafkaConsumerService.java:54) ~[main/:na]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:168) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.KotlinAwareInvocableHandlerMethod.doInvoke(KotlinAwareInvocableHandlerMethod.java:48) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.invoke(InvocableHandlerMethod.java:119) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.HandlerAdapter.invoke(HandlerAdapter.java:80) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invokeHandler(MessagingMessageListenerAdapter.java:488) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invoke(MessagingMessageListenerAdapter.java:425) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:92) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:52) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeOnMessage(KafkaMessageListenerContainer.java:2905) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeOnMessage(KafkaMessageListenerContainer.java:2884) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeRecordListener(KafkaMessageListenerContainer.java:2794) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeWithRecords(KafkaMessageListenerContainer.java:2636) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeRecordListener(KafkaMessageListenerContainer.java:2530) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeListener(KafkaMessageListenerContainer.java:2168) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeIfHaveRecords(KafkaMessageListenerContainer.java:1545) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.pollAndInvoke(KafkaMessageListenerContainer.java:1483) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.run(KafkaMessageListenerContainer.java:1352) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825) ~[na:na]
-	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+2026-03-22T13:13:00.219+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Successfully joined group with generation Generation{generationId=56, memberId='logstream-service-2-f4ea313c-61f2-4d8a-9818-26557585bc33', protocol='range'}
+
+2026-03-22T13:13:00.219+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Successfully joined group with generation Generation{generationId=56, memberId='logstream-service-1-dcd36baa-e815-4a4e-80e1-e8be368a2cbc', protocol='range'}
+
+2026-03-22T13:13:00.219+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Successfully joined group with generation Generation{generationId=56, memberId='logstream-service-0-b2ef5eda-416f-4ef1-babf-f2ca592df369', protocol='range'}
+
+2026-03-22T13:13:00.223+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Finished assignment for group at generation 56: {logstream-service-1-dcd36baa-e815-4a4e-80e1-e8be368a2cbc=Assignment(partitions=[]), logstream-service-2-f4ea313c-61f2-4d8a-9818-26557585bc33=Assignment(partitions=[]), logstream-service-0-b2ef5eda-416f-4ef1-babf-f2ca592df369=Assignment(partitions=[logstream.input-0])}
+
+2026-03-22T13:13:00.229+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Successfully synced group in generation Generation{generationId=56, memberId='logstream-service-2-f4ea313c-61f2-4d8a-9818-26557585bc33', protocol='range'}
+
+2026-03-22T13:13:00.229+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Successfully synced group in generation Generation{generationId=56, memberId='logstream-service-0-b2ef5eda-416f-4ef1-babf-f2ca592df369', protocol='range'}
+
+2026-03-22T13:13:00.229+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Successfully synced group in generation Generation{generationId=56, memberId='logstream-service-1-dcd36baa-e815-4a4e-80e1-e8be368a2cbc', protocol='range'}
+
+2026-03-22T13:13:00.230+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Notifying assignor about the new Assignment(partitions=[])
+
+2026-03-22T13:13:00.230+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Notifying assignor about the new Assignment(partitions=[])
+
+2026-03-22T13:13:00.230+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Adding newly assigned partitions: []
+
+2026-03-22T13:13:00.230+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Notifying assignor about the new Assignment(partitions=[logstream.input-0])
+
+2026-03-22T13:13:00.230+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Adding newly assigned partitions: []
+
+2026-03-22T13:13:00.231+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions assigned: []
+
+2026-03-22T13:13:00.231+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions assigned: []
+
+2026-03-22T13:13:00.231+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Adding newly assigned partitions: [logstream.input-0]
+
+2026-03-22T13:13:00.236+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerUtils        : Setting offset for partition logstream.input-0 to the committed offset FetchPosition{offset=37, offsetEpoch=Optional[1], currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 0 rack: null isFenced: false)], epoch=absent}}
+
+2026-03-22T13:13:00.237+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions assigned: [logstream.input-0]
+
+2026-03-22T13:17:39.747+01:00 DEBUG 68446 --- [SpringApplicationShutdownHook] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+
+2026-03-22T13:17:39.751+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Revoke previously assigned partitions [logstream.input-0]
+
+2026-03-22T13:17:39.751+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Member logstream-service-1-dcd36baa-e815-4a4e-80e1-e8be368a2cbc sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+
+2026-03-22T13:17:39.751+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Member logstream-service-2-f4ea313c-61f2-4d8a-9818-26557585bc33 sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+
+2026-03-22T13:17:39.751+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions revoked: [logstream.input-0]
+
+2026-03-22T13:17:39.751+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Member logstream-service-0-b2ef5eda-416f-4ef1-babf-f2ca592df369 sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Unsubscribed all topics or patterns and assigned partitions
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Unsubscribed all topics or patterns and assigned partitions
+
+2026-03-22T13:17:39.752+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Unsubscribed all topics or patterns and assigned partitions
+
+2026-03-22T13:17:39.753+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.753+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.753+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.753+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.753+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.753+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+
+2026-03-22T13:17:39.755+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+
+2026-03-22T13:17:39.758+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for logstream-service-1 unregistered
+
+2026-03-22T13:17:39.758+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for logstream-service-2 unregistered
+
+2026-03-22T13:17:39.758+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: Consumer stopped
+
+2026-03-22T13:17:39.758+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: Consumer stopped
+
+2026-03-22T13:17:40.709+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+
+2026-03-22T13:17:40.710+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+
+2026-03-22T13:17:40.710+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+
+2026-03-22T13:17:40.710+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+
+2026-03-22T13:17:40.713+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for logstream-service-0 unregistered
+
+2026-03-22T13:17:40.714+01:00  INFO 68446 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: Consumer stopped
+
+2026-03-22T13:17:40.716+01:00  INFO 68446 --- [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+
+2026-03-22T13:17:42.725+01:00  INFO 68446 --- [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+
+2026-03-22T13:17:45.269+01:00  INFO 68928 --- [main] o.s.s.core.SpringSecurityCoreVersion     : You are running with Spring Security Core 7.0.4
+
+2026-03-22T13:17:45.317+01:00  INFO 68928 --- [main] c.o.logstream.LogstreamApplication       : Starting LogstreamApplication v26.02.17 using Java 25.0.2 with PID 68928 (/Users/gentlebookpro/Projekte/Omnixys/services/logstream/build/classes/java/main started by gentlebookpro in /Users/gentlebookpro/Projekte/Omnixys/services/logstream)
+
+2026-03-22T13:17:45.317+01:00 DEBUG 68928 --- [main] c.o.logstream.LogstreamApplication       : Running with Spring Boot v4.0.4, Spring v7.0.6
+
+2026-03-22T13:17:45.318+01:00  INFO 68928 --- [main] c.o.logstream.LogstreamApplication       : The following 1 profile is active: "dev"
+
+2026-03-22T13:17:45.803+01:00  INFO 68928 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+
+2026-03-22T13:17:45.804+01:00  INFO 68928 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+
+2026-03-22T13:17:45.820+01:00  INFO 68928 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+
+2026-03-22T13:17:46.029+01:00  WARN 68928 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'com.omnixys.kafka.autoconfigure.KafkaAutoConfiguration' of type [com.omnixys.kafka.autoconfigure.KafkaAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [kafkaHandlerBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+
+2026-03-22T13:17:46.223+01:00  INFO 68928 --- [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 7401 (http)
+
+2026-03-22T13:17:46.231+01:00  INFO 68928 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+
+2026-03-22T13:17:46.231+01:00  INFO 68928 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+
+2026-03-22T13:17:46.271+01:00  INFO 68928 --- [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 926 ms
+
+2026-03-22T13:17:46.948+01:00 ERROR 68928 --- [main] i.n.r.d.DnsServerAddressStreamProviders  : Unable to load io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'. Use DEBUG level to see the full stack: java.lang.UnsatisfiedLinkError: failed to load the required native library
+
+2026-03-22T13:17:47.252+01:00 DEBUG 68928 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : 2 mappings in 'requestMappingHandlerMapping'
+
+2026-03-22T13:17:47.365+01:00  INFO 68928 --- [main] efaultSchemaResourceGraphQlSourceBuilder : Loaded 1 resource(s) in the GraphQL schema.
+
+2026-03-22T13:17:47.480+01:00  INFO 68928 --- [main] o.s.b.g.a.GraphQlAutoConfiguration       : GraphQL schema inspection:
+	Unmapped fields: {Query=[_service]}
+	Unmapped registrations: {}
+	Unmapped arguments: {}
+	Field nullness errors: {}
+	Argument nullness errors: {}
+	Skipped types: []
+
+2026-03-22T13:17:47.497+01:00  INFO 68928 --- [main] s.b.g.a.s.GraphQlWebMvcAutoConfiguration : GraphQL endpoint HTTP POST /graphql
+
+2026-03-22T13:17:47.958+01:00  INFO 68928 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+
+2026-03-22T13:17:48.074+01:00  INFO 68928 --- [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 7401 (http) with context path '/'
+
+2026-03-22T13:17:48.100+01:00  INFO 68928 --- [main] o.a.kafka.common.config.AbstractConfig   : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.offset.reset = latest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = logstream-service-0
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = true
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = logstream-consumer
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	share.acknowledgement.mode = implicit
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
 
 
-2026-03-20T13:09:21.084+01:00 ERROR 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] c.o.l.kafka.KafkaConsumerService         : Kafka log processing failed for topic=authentication.send.logstream partition=0 offset=27 -> skipping message
+2026-03-22T13:17:48.125+01:00  INFO 68928 --- [main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
 
-com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "eventId" (class com.omnixys.logstream.kafka.EventEnvelope), not marked as ignorable (4 known properties: "version", "event", "service", "payload"])
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1194] (through reference chain: com.omnixys.logstream.kafka.EventEnvelope["eventId"])
-	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1208) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2380) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1823) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperties(BeanDeserializerBase.java:1773) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeUsingPropertyBased(BeanDeserializer.java:573) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1499) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:340) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:5038) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:4032) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.processLogEvent(KafkaConsumerService.java:101) ~[main/:na]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.consumeLogEvent(KafkaConsumerService.java:54) ~[main/:na]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:168) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.KotlinAwareInvocableHandlerMethod.doInvoke(KotlinAwareInvocableHandlerMethod.java:48) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.invoke(InvocableHandlerMethod.java:119) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.HandlerAdapter.invoke(HandlerAdapter.java:80) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invokeHandler(MessagingMessageListenerAdapter.java:488) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invoke(MessagingMessageListenerAdapter.java:425) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:92) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:52) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeOnMessage(KafkaMessageListenerContainer.java:2905) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeOnMessage(KafkaMessageListenerContainer.java:2884) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeRecordListener(KafkaMessageListenerContainer.java:2794) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeWithRecords(KafkaMessageListenerContainer.java:2636) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeRecordListener(KafkaMessageListenerContainer.java:2530) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeListener(KafkaMessageListenerContainer.java:2168) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeIfHaveRecords(KafkaMessageListenerContainer.java:1545) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.pollAndInvoke(KafkaMessageListenerContainer.java:1483) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.run(KafkaMessageListenerContainer.java:1352) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825) ~[na:na]
-	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+2026-03-22T13:17:48.215+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.1.2
 
+2026-03-22T13:17:48.216+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: c82fd9b934b4c1e6
 
-2026-03-20T13:09:21.085+01:00 ERROR 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] c.o.l.kafka.KafkaConsumerService         : Kafka log processing failed for topic=authentication.send.logstream partition=0 offset=28 -> skipping message
+2026-03-22T13:17:48.216+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1774181868214
 
-com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "eventId" (class com.omnixys.logstream.kafka.EventEnvelope), not marked as ignorable (4 known properties: "version", "event", "service", "payload"])
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 651] (through reference chain: com.omnixys.logstream.kafka.EventEnvelope["eventId"])
-	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1208) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2380) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1823) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperties(BeanDeserializerBase.java:1773) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeUsingPropertyBased(BeanDeserializer.java:573) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1499) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:340) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:5038) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:4032) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.processLogEvent(KafkaConsumerService.java:101) ~[main/:na]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.consumeLogEvent(KafkaConsumerService.java:54) ~[main/:na]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:168) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.KotlinAwareInvocableHandlerMethod.doInvoke(KotlinAwareInvocableHandlerMethod.java:48) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.invoke(InvocableHandlerMethod.java:119) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.HandlerAdapter.invoke(HandlerAdapter.java:80) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invokeHandler(MessagingMessageListenerAdapter.java:488) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invoke(MessagingMessageListenerAdapter.java:425) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:92) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:52) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeOnMessage(KafkaMessageListenerContainer.java:2905) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeOnMessage(KafkaMessageListenerContainer.java:2884) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeRecordListener(KafkaMessageListenerContainer.java:2794) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeWithRecords(KafkaMessageListenerContainer.java:2636) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeRecordListener(KafkaMessageListenerContainer.java:2530) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeListener(KafkaMessageListenerContainer.java:2168) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeIfHaveRecords(KafkaMessageListenerContainer.java:1545) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.pollAndInvoke(KafkaMessageListenerContainer.java:1483) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.run(KafkaMessageListenerContainer.java:1352) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825) ~[na:na]
-	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+2026-03-22T13:17:48.217+01:00  INFO 68928 --- [main] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Subscribed to topic(s): logstream.input
 
-
-2026-03-20T13:09:21.085+01:00 ERROR 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] c.o.l.kafka.KafkaConsumerService         : Kafka log processing failed for topic=authentication.send.logstream partition=0 offset=29 -> skipping message
-
-com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "eventId" (class com.omnixys.logstream.kafka.EventEnvelope), not marked as ignorable (4 known properties: "version", "event", "service", "payload"])
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 721] (through reference chain: com.omnixys.logstream.kafka.EventEnvelope["eventId"])
-	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1208) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2380) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1823) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperties(BeanDeserializerBase.java:1773) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeUsingPropertyBased(BeanDeserializer.java:573) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1499) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:340) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:5038) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:4032) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.processLogEvent(KafkaConsumerService.java:101) ~[main/:na]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.consumeLogEvent(KafkaConsumerService.java:54) ~[main/:na]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:168) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.KotlinAwareInvocableHandlerMethod.doInvoke(KotlinAwareInvocableHandlerMethod.java:48) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.invoke(InvocableHandlerMethod.java:119) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.HandlerAdapter.invoke(HandlerAdapter.java:80) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invokeHandler(MessagingMessageListenerAdapter.java:488) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invoke(MessagingMessageListenerAdapter.java:425) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:92) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:52) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeOnMessage(KafkaMessageListenerContainer.java:2905) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeOnMessage(KafkaMessageListenerContainer.java:2884) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeRecordListener(KafkaMessageListenerContainer.java:2794) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeWithRecords(KafkaMessageListenerContainer.java:2636) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeRecordListener(KafkaMessageListenerContainer.java:2530) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeListener(KafkaMessageListenerContainer.java:2168) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeIfHaveRecords(KafkaMessageListenerContainer.java:1545) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.pollAndInvoke(KafkaMessageListenerContainer.java:1483) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.run(KafkaMessageListenerContainer.java:1352) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825) ~[na:na]
-	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
-
-
-2026-03-20T13:09:21.085+01:00 ERROR 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] c.o.l.kafka.KafkaConsumerService         : Kafka log processing failed for topic=authentication.send.logstream partition=0 offset=30 -> skipping message
-
-com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "eventId" (class com.omnixys.logstream.kafka.EventEnvelope), not marked as ignorable (4 known properties: "version", "event", "service", "payload"])
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 1194] (through reference chain: com.omnixys.logstream.kafka.EventEnvelope["eventId"])
-	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1208) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2380) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1823) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperties(BeanDeserializerBase.java:1773) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeUsingPropertyBased(BeanDeserializer.java:573) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1499) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:340) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:5038) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:4032) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.processLogEvent(KafkaConsumerService.java:101) ~[main/:na]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.consumeLogEvent(KafkaConsumerService.java:54) ~[main/:na]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:168) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.KotlinAwareInvocableHandlerMethod.doInvoke(KotlinAwareInvocableHandlerMethod.java:48) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.invoke(InvocableHandlerMethod.java:119) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.HandlerAdapter.invoke(HandlerAdapter.java:80) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invokeHandler(MessagingMessageListenerAdapter.java:488) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invoke(MessagingMessageListenerAdapter.java:425) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:92) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:52) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeOnMessage(KafkaMessageListenerContainer.java:2905) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeOnMessage(KafkaMessageListenerContainer.java:2884) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeRecordListener(KafkaMessageListenerContainer.java:2794) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeWithRecords(KafkaMessageListenerContainer.java:2636) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeRecordListener(KafkaMessageListenerContainer.java:2530) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeListener(KafkaMessageListenerContainer.java:2168) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeIfHaveRecords(KafkaMessageListenerContainer.java:1545) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.pollAndInvoke(KafkaMessageListenerContainer.java:1483) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.run(KafkaMessageListenerContainer.java:1352) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825) ~[na:na]
-	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+2026-03-22T13:17:48.222+01:00  INFO 68928 --- [main] o.a.kafka.common.config.AbstractConfig   : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.offset.reset = latest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = logstream-service-1
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = true
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = logstream-consumer
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	share.acknowledgement.mode = implicit
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
 
 
-2026-03-20T13:09:21.086+01:00 ERROR 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] c.o.l.kafka.KafkaConsumerService         : Kafka log processing failed for topic=authentication.send.logstream partition=0 offset=31 -> skipping message
+2026-03-22T13:17:48.222+01:00  INFO 68928 --- [main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
 
-com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException: Unrecognized field "eventId" (class com.omnixys.logstream.kafka.EventEnvelope), not marked as ignorable (4 known properties: "version", "event", "service", "payload"])
- at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); line: 1, column: 651] (through reference chain: com.omnixys.logstream.kafka.EventEnvelope["eventId"])
-	at com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException.from(UnrecognizedPropertyException.java:61) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.DeserializationContext.handleUnknownProperty(DeserializationContext.java:1208) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.std.StdDeserializer.handleUnknownProperty(StdDeserializer.java:2380) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperty(BeanDeserializerBase.java:1823) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.handleUnknownProperties(BeanDeserializerBase.java:1773) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer._deserializeUsingPropertyBased(BeanDeserializer.java:573) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1499) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:340) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:177) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:342) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:5038) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:4032) ~[jackson-databind-2.20.2.jar:2.20.2]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.processLogEvent(KafkaConsumerService.java:101) ~[main/:na]
-	at com.omnixys.logstream.kafka.KafkaConsumerService.consumeLogEvent(KafkaConsumerService.java:54) ~[main/:na]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565) ~[na:na]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:168) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.KotlinAwareInvocableHandlerMethod.doInvoke(KotlinAwareInvocableHandlerMethod.java:48) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.messaging.handler.invocation.InvocableHandlerMethod.invoke(InvocableHandlerMethod.java:119) ~[spring-messaging-7.0.5.jar:7.0.5]
-	at org.springframework.kafka.listener.adapter.HandlerAdapter.invoke(HandlerAdapter.java:80) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invokeHandler(MessagingMessageListenerAdapter.java:488) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.MessagingMessageListenerAdapter.invoke(MessagingMessageListenerAdapter.java:425) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:92) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.adapter.RecordMessagingMessageListenerAdapter.onMessage(RecordMessagingMessageListenerAdapter.java:52) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeOnMessage(KafkaMessageListenerContainer.java:2905) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeOnMessage(KafkaMessageListenerContainer.java:2884) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeRecordListener(KafkaMessageListenerContainer.java:2794) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.doInvokeWithRecords(KafkaMessageListenerContainer.java:2636) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeRecordListener(KafkaMessageListenerContainer.java:2530) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeListener(KafkaMessageListenerContainer.java:2168) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.invokeIfHaveRecords(KafkaMessageListenerContainer.java:1545) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.pollAndInvoke(KafkaMessageListenerContainer.java:1483) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at org.springframework.kafka.listener.KafkaMessageListenerContainer$ListenerConsumer.run(KafkaMessageListenerContainer.java:1352) ~[spring-kafka-4.0.3.jar:4.0.3]
-	at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1825) ~[na:na]
-	at java.base/java.lang.Thread.run(Thread.java:1474) ~[na:na]
+2026-03-22T13:17:48.226+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.1.2
+
+2026-03-22T13:17:48.226+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: c82fd9b934b4c1e6
+
+2026-03-22T13:17:48.226+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1774181868226
+
+2026-03-22T13:17:48.226+01:00  INFO 68928 --- [main] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Subscribed to topic(s): logstream.input
+
+2026-03-22T13:17:48.227+01:00  INFO 68928 --- [main] o.a.kafka.common.config.AbstractConfig   : ConsumerConfig values: 
+	allow.auto.create.topics = true
+	auto.commit.interval.ms = 5000
+	auto.offset.reset = latest
+	bootstrap.servers = [localhost:9092]
+	check.crcs = true
+	client.dns.lookup = use_all_dns_ips
+	client.id = logstream-service-2
+	client.rack = 
+	connections.max.idle.ms = 540000
+	default.api.timeout.ms = 60000
+	enable.auto.commit = true
+	enable.metrics.push = true
+	exclude.internal.topics = true
+	fetch.max.bytes = 52428800
+	fetch.max.wait.ms = 500
+	fetch.min.bytes = 1
+	group.id = logstream-consumer
+	group.instance.id = null
+	group.protocol = classic
+	group.remote.assignor = null
+	heartbeat.interval.ms = 3000
+	interceptor.classes = []
+	internal.leave.group.on.close = true
+	internal.throw.on.fetch.stable.offset.unsupported = false
+	isolation.level = read_uncommitted
+	key.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
+	max.partition.fetch.bytes = 1048576
+	max.poll.interval.ms = 300000
+	max.poll.records = 500
+	metadata.max.age.ms = 300000
+	metadata.recovery.rebootstrap.trigger.ms = 300000
+	metadata.recovery.strategy = rebootstrap
+	metric.reporters = [org.apache.kafka.common.metrics.JmxReporter]
+	metrics.num.samples = 2
+	metrics.recording.level = INFO
+	metrics.sample.window.ms = 30000
+	partition.assignment.strategy = [class org.apache.kafka.clients.consumer.RangeAssignor, class org.apache.kafka.clients.consumer.CooperativeStickyAssignor]
+	receive.buffer.bytes = 65536
+	reconnect.backoff.max.ms = 1000
+	reconnect.backoff.ms = 50
+	request.timeout.ms = 30000
+	retry.backoff.max.ms = 1000
+	retry.backoff.ms = 100
+	sasl.client.callback.handler.class = null
+	sasl.jaas.config = null
+	sasl.kerberos.kinit.cmd = /usr/bin/kinit
+	sasl.kerberos.min.time.before.relogin = 60000
+	sasl.kerberos.service.name = null
+	sasl.kerberos.ticket.renew.jitter = 0.05
+	sasl.kerberos.ticket.renew.window.factor = 0.8
+	sasl.login.callback.handler.class = null
+	sasl.login.class = null
+	sasl.login.connect.timeout.ms = null
+	sasl.login.read.timeout.ms = null
+	sasl.login.refresh.buffer.seconds = 300
+	sasl.login.refresh.min.period.seconds = 60
+	sasl.login.refresh.window.factor = 0.8
+	sasl.login.refresh.window.jitter = 0.05
+	sasl.login.retry.backoff.max.ms = 10000
+	sasl.login.retry.backoff.ms = 100
+	sasl.mechanism = GSSAPI
+	sasl.oauthbearer.assertion.algorithm = RS256
+	sasl.oauthbearer.assertion.claim.aud = null
+	sasl.oauthbearer.assertion.claim.exp.seconds = 300
+	sasl.oauthbearer.assertion.claim.iss = null
+	sasl.oauthbearer.assertion.claim.jti.include = false
+	sasl.oauthbearer.assertion.claim.nbf.seconds = 60
+	sasl.oauthbearer.assertion.claim.sub = null
+	sasl.oauthbearer.assertion.file = null
+	sasl.oauthbearer.assertion.private.key.file = null
+	sasl.oauthbearer.assertion.private.key.passphrase = null
+	sasl.oauthbearer.assertion.template.file = null
+	sasl.oauthbearer.client.credentials.client.id = null
+	sasl.oauthbearer.client.credentials.client.secret = null
+	sasl.oauthbearer.clock.skew.seconds = 30
+	sasl.oauthbearer.expected.audience = null
+	sasl.oauthbearer.expected.issuer = null
+	sasl.oauthbearer.header.urlencode = false
+	sasl.oauthbearer.jwks.endpoint.refresh.ms = 3600000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.max.ms = 10000
+	sasl.oauthbearer.jwks.endpoint.retry.backoff.ms = 100
+	sasl.oauthbearer.jwks.endpoint.url = null
+	sasl.oauthbearer.jwt.retriever.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtRetriever
+	sasl.oauthbearer.jwt.validator.class = class org.apache.kafka.common.security.oauthbearer.DefaultJwtValidator
+	sasl.oauthbearer.scope = null
+	sasl.oauthbearer.scope.claim.name = scope
+	sasl.oauthbearer.sub.claim.name = sub
+	sasl.oauthbearer.token.endpoint.url = null
+	security.protocol = PLAINTEXT
+	security.providers = null
+	send.buffer.bytes = 131072
+	session.timeout.ms = 45000
+	share.acknowledgement.mode = implicit
+	socket.connection.setup.timeout.max.ms = 30000
+	socket.connection.setup.timeout.ms = 10000
+	ssl.cipher.suites = null
+	ssl.enabled.protocols = [TLSv1.2, TLSv1.3]
+	ssl.endpoint.identification.algorithm = https
+	ssl.engine.factory.class = null
+	ssl.key.password = null
+	ssl.keymanager.algorithm = SunX509
+	ssl.keystore.certificate.chain = null
+	ssl.keystore.key = null
+	ssl.keystore.location = null
+	ssl.keystore.password = null
+	ssl.keystore.type = JKS
+	ssl.protocol = TLSv1.3
+	ssl.provider = null
+	ssl.secure.random.implementation = null
+	ssl.trustmanager.algorithm = PKIX
+	ssl.truststore.certificates = null
+	ssl.truststore.location = null
+	ssl.truststore.password = null
+	ssl.truststore.type = JKS
+	value.deserializer = class org.apache.kafka.common.serialization.StringDeserializer
 
 
-2026-03-20T13:09:28.268+01:00 DEBUG 9383 --- [SpringApplicationShutdownHook] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+2026-03-22T13:17:48.228+01:00  INFO 68928 --- [main] o.a.k.c.t.i.KafkaMetricsCollector        : initializing Kafka metrics collector
 
-2026-03-20T13:09:28.318+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-omnixys-logstream-service-2, groupId=omnixys-logstream-service] Revoke previously assigned partitions [test-0]
+2026-03-22T13:17:48.230+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka version: 4.1.2
 
-2026-03-20T13:09:28.318+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=consumer-omnixys-logstream-service-1, groupId=omnixys-logstream-service] Revoke previously assigned partitions [address.send.logstream-0, authentication.send.logstream-0, event.send.logstream-0, invitation.send.logstream-0, notification.send.logstream-0, seat.send.logstream-0, ticket.send.logstream-0, user.send.logstream-0]
+2026-03-22T13:17:48.230+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka commitId: c82fd9b934b4c1e6
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : omnixys-logstream-service: partitions revoked: [test-0]
+2026-03-22T13:17:48.230+01:00  INFO 68928 --- [main] o.a.kafka.common.utils.AppInfoParser     : Kafka startTimeMs: 1774181868230
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : omnixys-logstream-service: partitions revoked: [address.send.logstream-0, authentication.send.logstream-0, event.send.logstream-0, invitation.send.logstream-0, notification.send.logstream-0, seat.send.logstream-0, ticket.send.logstream-0, user.send.logstream-0]
+2026-03-22T13:17:48.231+01:00  INFO 68928 --- [main] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Subscribed to topic(s): logstream.input
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-1, groupId=omnixys-logstream-service] Member consumer-omnixys-logstream-service-1-0277e1e9-a1f8-464e-af8c-a4a8c4df3b3d sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+2026-03-22T13:17:48.239+01:00  INFO 68928 --- [main] c.o.logstream.LogstreamApplication       : Started LogstreamApplication in 3.174 seconds (process running for 3.435)
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-2, groupId=omnixys-logstream-service] Member consumer-omnixys-logstream-service-2-3b32f388-a0df-4633-8b98-2bbd31f57f9b sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+2026-03-22T13:17:48.242+01:00 DEBUG 68928 --- [main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-1, groupId=omnixys-logstream-service] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.243+01:00 DEBUG 68928 --- [main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-2, groupId=omnixys-logstream-service] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.433+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Cluster ID: redpanda.815df4b0-f35e-4c45-9a44-fbedec71bfe1
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-1, groupId=omnixys-logstream-service] Request joining group due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.432+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Cluster ID: redpanda.815df4b0-f35e-4c45-9a44-fbedec71bfe1
 
-2026-03-20T13:09:28.319+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-2, groupId=omnixys-logstream-service] Request joining group due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.432+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] org.apache.kafka.clients.Metadata        : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Cluster ID: redpanda.815df4b0-f35e-4c45-9a44-fbedec71bfe1
 
-2026-03-20T13:09:28.320+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=consumer-omnixys-logstream-service-1, groupId=omnixys-logstream-service] Unsubscribed all topics or patterns and assigned partitions
+2026-03-22T13:17:48.434+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Discovered group coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false)
 
-2026-03-20T13:09:28.320+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=consumer-omnixys-logstream-service-2, groupId=omnixys-logstream-service] Unsubscribed all topics or patterns and assigned partitions
+2026-03-22T13:17:48.434+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Discovered group coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false)
 
-2026-03-20T13:09:28.320+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-2, groupId=omnixys-logstream-service] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.434+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Discovered group coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false)
 
-2026-03-20T13:09:28.321+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-2, groupId=omnixys-logstream-service] Request joining group due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.439+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:28.321+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-1, groupId=omnixys-logstream-service] Resetting generation and member id due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.439+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:28.321+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=consumer-omnixys-logstream-service-1, groupId=omnixys-logstream-service] Request joining group due to: consumer pro-actively leaving the group
+2026-03-22T13:17:48.439+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:29.065+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-22T13:17:48.449+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Request joining group due to: need to re-join with the given member-id: logstream-service-2-14e28659-3a97-4c87-93e2-9f0c49361ffc
 
-2026-03-20T13:09:29.066+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-22T13:17:48.449+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Request joining group due to: need to re-join with the given member-id: logstream-service-0-26389eca-dc88-40e1-a7e8-e021cd8e7b6b
 
-2026-03-20T13:09:29.067+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-03-22T13:17:48.449+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Request joining group due to: need to re-join with the given member-id: logstream-service-1-818fdea8-b4d1-450a-a805-211ef5aded97
 
-2026-03-20T13:09:29.067+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-22T13:17:48.450+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:29.076+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for consumer-omnixys-logstream-service-1 unregistered
+2026-03-22T13:17:48.450+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:29.077+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : omnixys-logstream-service: Consumer stopped
+2026-03-22T13:17:48.450+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] (Re-)joining group
 
-2026-03-20T13:09:29.269+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+2026-03-22T13:17:48.452+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Successfully joined group with generation Generation{generationId=58, memberId='logstream-service-0-26389eca-dc88-40e1-a7e8-e021cd8e7b6b', protocol='range'}
 
-2026-03-20T13:09:29.270+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+2026-03-22T13:17:48.452+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Successfully joined group with generation Generation{generationId=58, memberId='logstream-service-2-14e28659-3a97-4c87-93e2-9f0c49361ffc', protocol='range'}
 
-2026-03-20T13:09:29.270+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+2026-03-22T13:17:48.452+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Successfully joined group with generation Generation{generationId=58, memberId='logstream-service-1-818fdea8-b4d1-450a-a805-211ef5aded97', protocol='range'}
 
-2026-03-20T13:09:29.270+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+2026-03-22T13:17:48.456+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Finished assignment for group at generation 58: {logstream-service-2-14e28659-3a97-4c87-93e2-9f0c49361ffc=Assignment(partitions=[]), logstream-service-0-26389eca-dc88-40e1-a7e8-e021cd8e7b6b=Assignment(partitions=[logstream.input-0]), logstream-service-1-818fdea8-b4d1-450a-a805-211ef5aded97=Assignment(partitions=[])}
 
-2026-03-20T13:09:29.276+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for consumer-omnixys-logstream-service-2 unregistered
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Successfully synced group in generation Generation{generationId=58, memberId='logstream-service-2-14e28659-3a97-4c87-93e2-9f0c49361ffc', protocol='range'}
 
-2026-03-20T13:09:29.277+01:00  INFO 9383 --- [org.springframework.kafka.KafkaListenerEndpointContainer#1-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : omnixys-logstream-service: Consumer stopped
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Successfully synced group in generation Generation{generationId=58, memberId='logstream-service-0-26389eca-dc88-40e1-a7e8-e021cd8e7b6b', protocol='range'}
 
-2026-03-20T13:09:29.279+01:00  INFO 9383 --- [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Successfully synced group in generation Generation{generationId=58, memberId='logstream-service-1-818fdea8-b4d1-450a-a805-211ef5aded97', protocol='range'}
 
-2026-03-20T13:09:31.291+01:00  INFO 9383 --- [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Notifying assignor about the new Assignment(partitions=[])
+
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Notifying assignor about the new Assignment(partitions=[])
+
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Notifying assignor about the new Assignment(partitions=[logstream.input-0])
+
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Adding newly assigned partitions: []
+
+2026-03-22T13:17:48.461+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Adding newly assigned partitions: []
+
+2026-03-22T13:17:48.462+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions assigned: []
+
+2026-03-22T13:17:48.462+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions assigned: []
+
+2026-03-22T13:17:48.463+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Adding newly assigned partitions: [logstream.input-0]
+
+2026-03-22T13:17:48.468+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerUtils        : Setting offset for partition logstream.input-0 to the committed offset FetchPosition{offset=37, offsetEpoch=Optional[1], currentLeader=LeaderAndEpoch{leader=Optional[localhost:9092 (id: 0 rack: null isFenced: false)], epoch=absent}}
+
+2026-03-22T13:17:48.469+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions assigned: [logstream.input-0]
+
+2026-03-22T13:27:34.702+01:00 DEBUG 68928 --- [SpringApplicationShutdownHook] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed from ACCEPTING_TRAFFIC to REFUSING_TRAFFIC
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] k.c.c.i.ConsumerRebalanceListenerInvoker : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Revoke previously assigned partitions [logstream.input-0]
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Member logstream-service-2-14e28659-3a97-4c87-93e2-9f0c49361ffc sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Member logstream-service-1-818fdea8-b4d1-450a-a805-211ef5aded97 sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: partitions revoked: [logstream.input-0]
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Member logstream-service-0-26389eca-dc88-40e1-a7e8-e021cd8e7b6b sending LeaveGroup request to coordinator localhost:9092 (id: 2147483647 rack: null isFenced: false) due to the consumer unsubscribed from all topics
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Unsubscribed all topics or patterns and assigned partitions
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Unsubscribed all topics or patterns and assigned partitions
+
+2026-03-22T13:27:34.708+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.i.ClassicKafkaConsumer         : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Unsubscribed all topics or patterns and assigned partitions
+
+2026-03-22T13:27:34.709+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.709+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.709+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Resetting generation and member id due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.710+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-2, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.710+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-1, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.710+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.k.c.c.internals.ConsumerCoordinator  : [Consumer clientId=logstream-service-0, groupId=logstream-consumer] Request joining group due to: consumer pro-actively leaving the group
+
+2026-03-22T13:27:34.712+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+
+2026-03-22T13:27:34.712+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+
+2026-03-22T13:27:34.712+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+
+2026-03-22T13:27:34.712+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+
+2026-03-22T13:27:34.713+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+
+2026-03-22T13:27:34.713+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+
+2026-03-22T13:27:34.713+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+
+2026-03-22T13:27:34.713+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+
+2026-03-22T13:27:34.715+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for logstream-service-2 unregistered
+
+2026-03-22T13:27:34.715+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for logstream-service-1 unregistered
+
+2026-03-22T13:27:34.715+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-2-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: Consumer stopped
+
+2026-03-22T13:27:34.715+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-1-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: Consumer stopped
+
+2026-03-22T13:27:35.612+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics scheduler closed
+
+2026-03-22T13:27:35.613+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.metrics.JmxReporter
+
+2026-03-22T13:27:35.613+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Closing reporter org.apache.kafka.common.telemetry.internals.ClientTelemetryReporter
+
+2026-03-22T13:27:35.613+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.apache.kafka.common.metrics.Metrics    : Metrics reporters closed
+
+2026-03-22T13:27:35.614+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.a.kafka.common.utils.AppInfoParser     : App info kafka.consumer for logstream-service-0 unregistered
+
+2026-03-22T13:27:35.614+01:00  INFO 68928 --- [org.springframework.kafka.KafkaListenerEndpointContainer#0-0-C-1] o.s.k.l.KafkaMessageListenerContainer    : logstream-consumer: Consumer stopped
+
+2026-03-22T13:27:35.616+01:00  INFO 68928 --- [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+
+2026-03-22T13:27:37.625+01:00  INFO 68928 --- [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
 

@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.graphql.autoconfigure.GraphQlSourceBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.graphql.data.federation.FederationSchemaFactory;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,7 +19,6 @@ import static com.omnixys.logstream.util.Banner.TEXT;
 @EnableWebSecurity
 @EnableMethodSecurity
 @EnableAsync
-@EnableKafka
 public class LogstreamApplication {
 
     public static void main(String[] args) {

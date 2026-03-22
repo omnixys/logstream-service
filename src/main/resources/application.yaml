@@ -15,33 +15,58 @@ server:
       enabled: false
   shutdown: graceful
 
-management:
-  metrics:
-    enable:
-      all: true
-  endpoints:
-    health:
-      probes:
-        enabled: true
-    prometheus:
-      enabled: true
-    web:
-      exposure:
-        include:
-          - prometheus
-          - health
-          - info
-          - metrics
-  tracing:
-    sampling:
-      probability: 1.0
-  otlp:
+omnixys:
+  observability:
+    enabled: true
+    service-name: logstream
+
     tracing:
-      endpoint: http://${app.tracing.tempo}:4318/v1/traces
+      enabled: true
+      sampling-probability: 1.0
+
+    otlp:
+      endpoint: http://localhost:4318/v1/traces
+
+  # =========================
+  # OMNIXYS KAFKA
+  # =========================
+  kafka:
+    enabled: true
+
+    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
+    client-id: logstream-service
+    group-id: logstream-consumer
+    topics:
+      - logstream.input
+
+    consumer:
+      auto-commit: true
+      concurrency: 3
+
+    producer:
+      acks: all
+
+  # =========================
+  # OMNIXYS LOGGER
+  # =========================
+  logger:
+    enabled: true
+    service-name: address
+
+    kafka:
+      enabled: true
+      topic:
+        - logstream.input
+
+    batch:
+      enabled: true
+      max-size: 200
+      flush-interval-ms: 100
 
 logstream:
   kafka:
     topics:
+      - logstream.input
       - logstream.authentication
       - logstream.event
       - logstream.user
@@ -61,13 +86,6 @@ spring:
       port: ${app.valkey.port}
       password: ${app.valkey.password}
       timeout: 2s
-  kafka:
-    bootstrap-servers: ${app.kafka.host}:${app.kafka.port}
-    consumer:
-      group-id: ${app.groupId}
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
   checkpoint.restore: onRefresh
 
@@ -115,8 +133,8 @@ app:
     port: ${VALKEY_PORT}
     password: ${VALKEY_PASSWORD}
 
-  tracing:
-    tempo: ${TEMPO_HOST}
+#  tracing:
+#    tempo: ${TEMPO_HOST}
 
   kafka:
     host: ${KAFKA_HOST}
