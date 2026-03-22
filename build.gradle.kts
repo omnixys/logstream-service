@@ -28,8 +28,8 @@ plugins {
     id("org.cyclonedx.bom") version "1.8.1"
 }
 
-group = "com.omnixys"
-version = "1.0.0"
+group = project.findProperty("group") as String
+version = project.findProperty("version") as String
 extra["snippetsDir"] = file("build/generated-snippets")
 
 java {
@@ -48,7 +48,7 @@ repositories {
     mavenCentral()
 
     maven {
-        name = "github-bom"
+        name = "github-starter"
         url = uri("https://maven.pkg.github.com/omnixys/omnixys-starter-java")
 
         credentials {
@@ -58,7 +58,7 @@ repositories {
     }
 
     maven {
-        name = "github-starter"
+        name = "github-bom"
         url = uri("https://maven.pkg.github.com/omnixys/omnixys-bom")
 
         credentials {
@@ -145,6 +145,7 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    failOnNoDiscoveredTests = false
     finalizedBy(tasks.jacocoTestReport) // Nach Tests Coverage Report erstellen
 }
 
@@ -185,5 +186,31 @@ tasks.named<JavaCompile>("compileJava") {
             add("--add-opens")
             add("--add-exports")
         }
+    }
+}
+
+/**
+ * 🔥 Ensure version is visible in build logs
+ */
+tasks.register("printVersion") {
+    doLast {
+        println("🚀 Building version: $version")
+    }
+}
+
+tasks.register("setVersion") {
+    doLast {
+        val newVersion = project.findProperty("newVersion") as String
+        val file = file("gradle.properties")
+
+        val updated = file.readLines().map {
+            if (it.startsWith("version=")) {
+                "version=$newVersion"
+            } else it
+        }
+
+        file.writeText(updated.joinToString("\n"))
+
+        println("✅ Version updated to $newVersion")
     }
 }

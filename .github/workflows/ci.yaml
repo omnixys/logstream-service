@@ -1,0 +1,190 @@
+name: Omnixys Pipeline (CI → Release → Docker)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+env:
+  SERVICE: ${{ vars.SERVICE }}
+  CURRENT_VERSION: ${{ vars.CURRENT_VERSION }}
+
+jobs:
+
+  # =========================================
+  # 1️⃣ CI (Build)
+  # =========================================
+  ci:
+    name: 🧪 CI – Build (Gradle / Java 25)
+    runs-on: ubuntu-latest
+
+    if: >
+      !contains(github.event.head_commit.message, 'chore(release)')
+
+    steps:
+      - name: 🧾 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ☕ Setup Java 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 25
+          cache: gradle
+
+      - name: 🔧 Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: 📦 Build
+        run: ./gradlew build --stacktrace
+
+  # =========================================
+  # 2️⃣ RELEASE (semantic-release + Gradle version)
+  # =========================================
+  release:
+    name: 🚀 Release (semantic-release)
+    runs-on: ubuntu-latest
+    needs: ci
+
+    outputs:
+      released: ${{ steps.semantic.outputs.released }}
+
+    steps:
+      - name: 🧾 Checkout (FULL HISTORY)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # -------------------------------
+      # Node (für semantic-release)
+      # -------------------------------
+      - name: ⚙️ Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: 📦 Install semantic-release deps
+        run: |
+          npm install -g semantic-release \
+            @semantic-release/changelog \
+            @semantic-release/git \
+            @semantic-release/github \
+            @semantic-release/commit-analyzer \
+            @semantic-release/release-notes-generator \
+            @semantic-release/exec \
+            conventional-changelog-conventionalcommits
+
+      - name: 🚀 Run semantic-release
+        id: semantic
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          npx semantic-release | tee log.txt
+
+          if grep -q "Published release" log.txt; then
+            echo "released=true" >> $GITHUB_OUTPUT
+          else
+            echo "released=false" >> $GITHUB_OUTPUT
+          fi
+
+  # =========================================
+  # 3️⃣ DOCKER BUILD & PUSH
+  # =========================================
+  docker:
+    name: 🐳 Docker Build & Push (Multi-Arch)
+    runs-on: ubuntu-latest
+    needs: release
+
+    if: needs.release.outputs.released == 'true'
+
+    strategy:
+      matrix:
+        java-version: [25]
+
+    steps:
+      - name: 🧾 Checkout
+        uses: actions/checkout@v4
+
+      - name: ☕ Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 25
+
+      # -------------------------------
+      # Extract Version
+      # -------------------------------
+      - name: 📦 Extract version
+        run: |
+          VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
+          echo "CURRENT_VERSION=$VERSION" >> $GITHUB_ENV
+          echo "CURRENT_DATE=$(date -u +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      # -------------------------------
+      # Docker Setup
+      # -------------------------------
+      - name: 🔧 Setup Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔑 Login DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🔑 Login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # -------------------------------
+      # Build & Push
+      # -------------------------------
+      - name: 🐳 Build & Push (DockerHub)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:${{ env.CURRENT_VERSION }}
+            ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:latest
+
+      - name: 🐳 Build & Push (GHCR)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ env.CURRENT_VERSION }}
+            ghcr.io/${{ github.repository }}:latest
+
+      # -------------------------------
+      # Sign Images
+      # -------------------------------
+      - name: 🔐 Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: 🔐 Sign images
+        run: |
+          cosign sign --yes ${{ secrets.DOCKER_USER }}/${{ env.SERVICE }}:${{ env.CURRENT_VERSION }}
+          cosign sign --yes ghcr.io/${{ github.repository }}:${{ env.CURRENT_VERSION }}
