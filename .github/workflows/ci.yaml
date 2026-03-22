@@ -25,7 +25,7 @@ env:
 
 jobs:
   ci:
-    name: CI – Build (Gradle / Java ${{ matrix.java-version }})
+    name: 🧪 CI – Build (Gradle / Java ${{ matrix.java-version }})
     runs-on: ubuntu-latest
 
     if: >
@@ -206,6 +206,9 @@ jobs:
       - name: 🐳 Build & Push (GHCR)
         uses: docker/build-push-action@v5
         with:
+          secrets: |
+            gpr_user=${{ github.actor }}
+            gpr_key=${{ secrets.OMNIXYS_TOKEN }}
           context: .
           push: true
           platforms: linux/amd64,linux/arm64
