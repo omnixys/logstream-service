@@ -1,4 +1,4 @@
-name: Omnixys Pipeline (CI → Release → Docker)
+name: Omnixys Gradle Pipeline
 
 on:
   push:
@@ -24,16 +24,18 @@ env:
   CURRENT_VERSION: ${{ vars.CURRENT_VERSION }}
 
 jobs:
-
-  # =========================================
-  # 1️⃣ CI (Build)
-  # =========================================
   ci:
-    name: 🧪 CI – Build (Gradle / Java 25)
+    name: CI – Build (Gradle / Java ${{ matrix.java-version }})
     runs-on: ubuntu-latest
 
     if: >
       !contains(github.event.head_commit.message, 'chore(release)')
+
+    strategy:
+      matrix:
+        java-version: [ 25 ]
+        node-version: [ 24 ]
+
 
     steps:
       - name: 🧾 Checkout
@@ -41,12 +43,23 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: ☕ Setup Java 25
+      - name: ☕ Setup Java ${{ matrix.java-version }}
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: 25
+          java-version: ${{ matrix.java-version }}
           cache: gradle
+
+      - name: 🔐 Configure Gradle credentials for GitHub Packages
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/gradle.properties
+          gpr.user=${GPR_USER}
+          gpr.key=${GPR_KEY}
+          EOF
+        env:
+          GPR_USER: ${{ github.actor }}
+          GPR_KEY: ${{ secrets.OMNIXYS_TOKEN }}
 
       - name: 🔧 Make Gradle executable
         run: chmod +x ./gradlew
@@ -77,7 +90,7 @@ jobs:
       - name: ⚙️ Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: ${{ matrix.node-version }}
 
       - name: 📦 Install semantic-release deps
         run: |
@@ -89,6 +102,17 @@ jobs:
             @semantic-release/release-notes-generator \
             @semantic-release/exec \
             conventional-changelog-conventionalcommits
+
+      - name: 🔐 Configure Gradle credentials for GitHub Packages
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/gradle.properties
+          gpr.user=${GPR_USER}
+          gpr.key=${GPR_KEY}
+          EOF
+        env:
+          GPR_USER: ${{ github.actor }}
+          GPR_KEY: ${{ secrets.OMNIXYS_TOKEN }}
 
       - name: 🚀 Run semantic-release
         id: semantic
@@ -115,7 +139,7 @@ jobs:
 
     strategy:
       matrix:
-        java-version: [25]
+        java-version: [ 25 ]
 
     steps:
       - name: 🧾 Checkout
@@ -125,7 +149,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: zulu
-          java-version: 25
+          java-version: ${{ matrix.java-version }}
 
       # -------------------------------
       # Extract Version
@@ -135,6 +159,17 @@ jobs:
           VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
           echo "CURRENT_VERSION=$VERSION" >> $GITHUB_ENV
           echo "CURRENT_DATE=$(date -u +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: 🔐 Configure Gradle credentials for GitHub Packages
+        run: |
+          mkdir -p ~/.gradle
+          cat <<EOF > ~/.gradle/gradle.properties
+          gpr.user=${GPR_USER}
+          gpr.key=${GPR_KEY}
+          EOF
+        env:
+          GPR_USER: ${{ github.actor }}
+          GPR_KEY: ${{ secrets.OMNIXYS_TOKEN }}
 
       # -------------------------------
       # Docker Setup
@@ -177,6 +212,19 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}:${{ env.CURRENT_VERSION }}
             ghcr.io/${{ github.repository }}:latest
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ env.CURRENT_VERSION }}
+            org.opencontainers.image.description=Omnixys Microservice – ${{ env.IMAGE_NAME }}
+            org.opencontainers.image.licenses=GPL-3.0-or-later
+          build-args: |
+            REVISION=${{ github.sha }}
+            CREATED=${{ env.CURRENT_DATE }}
+            APP_VERSION=${{ env.CURRENT_VERSION }}
+            APP_NAME=${{ vars.SERVICE }}
+            JAVA_VERSION=${{ matrix.java-version }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       # -------------------------------
       # Sign Images
