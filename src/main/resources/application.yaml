@@ -17,6 +17,8 @@ server:
 
 omnixys:
   observability:
+    metrics:
+      prometheus-enabled: true
     enabled: true
     service-name: logstream
 
@@ -27,9 +29,6 @@ omnixys:
     otlp:
       endpoint: http://localhost:4318/v1/traces
 
-  # =========================
-  # OMNIXYS KAFKA
-  # =========================
   kafka:
     enabled: true
 
@@ -46,17 +45,13 @@ omnixys:
     producer:
       acks: all
 
-  # =========================
-  # OMNIXYS LOGGER
-  # =========================
   logger:
-    enabled: true
+    enabled: false
     service-name: address
 
     kafka:
       enabled: true
-      topic:
-        - logstream.input
+      topic: logstream.input
 
     batch:
       enabled: true
