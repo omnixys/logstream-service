@@ -3,6 +3,12 @@
 All notable changes in this project will be documented in this file.
 
 
+## [1.0.4](https://github.com/omnixys/logstream-service/compare/v1.0.3...v1.0.4) (2026-03-22)
+
+### Dockerfile
+
+* **Dockerfile:** update Dockerfile ([](https://github.com/omnixys/logstream-service/commit/ec52b2e86b75d97003730c7d502cfd91d40c9238))
+
 ## [1.0.3](https://github.com/omnixys/logstream-service/compare/v1.0.2...v1.0.3) (2026-03-22)
 
 ### Ci
