@@ -53,17 +53,32 @@ RUN apt-get update && \
     apt-get install --no-install-recommends --yes dumb-init=1.2.5-2 wget && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* /tmp/* && \
-    groupadd --gid 1000 app && \
+    rm -rf /var/lib/apt/lists/* /tmp/*
+
+# ---- optional OTEL agent download ----
+ARG OTEL_AGENT_ENABLED=true
+ENV OTEL_AGENT_PATH=/otel/opentelemetry-javaagent.jar
+
+RUN if [ "$OTEL_AGENT_ENABLED" = "true" ]; then \
+      mkdir -p /otel && \
+      wget -O ${OTEL_AGENT_PATH} \
+      https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar ; \
+    fi
+
+# Kopiere extrahierte Spring Boot-Schichten (Layered JAR-Struktur)
+COPY --from=builder --chown=app:app /source/extracted/dependencies/ ./
+COPY --from=builder --chown=app:app /source/extracted/spring-boot-loader/ ./
+COPY --from=builder --chown=app:app /source/extracted/snapshot-dependencies/ ./
+COPY --from=builder --chown=app:app /source/extracted/application/ ./
+
+# ---- user ----
+RUN groupadd --gid 1000 app && \
     useradd --uid 1000 --gid app --no-create-home app && \
     chown -R app:app /workspace
 
 USER app
 
-COPY --from=builder --chown=app:app /source/extracted/dependencies/ ./
-COPY --from=builder --chown=app:app /source/extracted/spring-boot-loader/ ./
-COPY --from=builder --chown=app:app /source/extracted/snapshot-dependencies/ ./
-COPY --from=builder --chown=app:app /source/extracted/application/ ./
+
 
 EXPOSE 8080
 
@@ -71,4 +86,12 @@ EXPOSE 8080
 HEALTHCHECK --interval=30s --timeout=3s --retries=1 \
     CMD wget -qO- http://localhost:8080/actuator/health | grep UP || exit 1
 
-ENTRYPOINT ["dumb-init", "java", "--enable-preview", "-jar", "application.jar"]
+ENTRYPOINT [ \
+  "dumb-init", \
+  "java", \
+  "--enable-preview", \
+  "-javaagent:/otel/opentelemetry-javaagent.jar", \
+  "-Dotel.service.name=${OTEL_SERVICE_NAME}", \
+  "-Dotel.exporter.otlp.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT}", \
+  "org.springframework.boot.loader.launch.JarLauncher" \
+]
