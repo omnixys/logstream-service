@@ -3,6 +3,20 @@
 All notable changes in this project will be documented in this file.
 
 
+## [2.0.0](https://github.com/omnixys/logstream-service/compare/v1.0.4...v2.0.0) (2026-03-26)
+
+### Dockerfile
+
+* **Dockerfile:** Add OTEL agent, update Dockerfile and settings ([](https://github.com/omnixys/logstream-service/commit/3d860f3d6cc519b5789724a22cbb5d02d222e35c))
+
+### Logstream
+
+* **Logstream:** Use vars, add local builds and tracing logs ([](https://github.com/omnixys/logstream-service/commit/7c47a3c4a4092619ade27eaf86baf9b12755afc5))
+
+### Other
+
+* **Other:** Merge branch 'main' of https://github.com/omnixys/logstream-service ([](https://github.com/omnixys/logstream-service/commit/6c3c53aed245f077da303b8f103a4e0b1db08beb))
+
 ## [1.0.4](https://github.com/omnixys/logstream-service/compare/v1.0.3...v1.0.4) (2026-03-22)
 
 ### Dockerfile
