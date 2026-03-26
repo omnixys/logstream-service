@@ -47,6 +47,11 @@ public class LogstreamKafkaHandler {
     @KafkaEvent(topic = "logstream.input")
     public void handle(KafkaEnvelope<LogDTO> envelope, Map<String, String> headers) {
 
+
+        log.info("CONSUMER Envelope {}", envelope);
+            log.info("CONSUMER HEADER {}", headers);
+
+
         Tracer tracer = GlobalOpenTelemetry.getTracer("omnixys.kafka");
 
         // 🔥 CONTEXT EXTRACT
@@ -72,6 +77,9 @@ public class LogstreamKafkaHandler {
             Map<String, String> labels = new HashMap<>();
             labels.put("service", safe(dto.service()));
             labels.put("level", safe(dto.level().toString()));
+            labels.put("traceparent", safe(headers.get("traceparent")));
+            labels.put("traceId", safe(headers.get("x-meta-traceId")));
+            labels.put("spanId", safe(headers.get("x-meta-spanId")));
 
             String logLine = objectMapper.writeValueAsString(dto);
 

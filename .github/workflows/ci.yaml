@@ -205,7 +205,7 @@ jobs:
             org.opencontainers.image.licenses=GPL-3.0-or-later
           build-args: |
             REVISION=${{ github.sha }}
-            CREATED=${{ env.CURRENT_DATE }}
+            CREATED=${{ vars.CURRENT_DATE }}
             APP_VERSION=${{ env.CURRENT_VERSION }}
             APP_NAME=${{ vars.SERVICE }}
             JAVA_VERSION=${{ matrix.java-version }}
@@ -299,7 +299,7 @@ jobs:
             org.opencontainers.image.licenses=GPL-3.0-or-later
           build-args: |
             REVISION=${{ github.sha }}
-            CREATED=${{ env.CURRENT_DATE }}
+            CREATED=${{ vars.CURRENT_DATE }}
             APP_VERSION=${{ env.CURRENT_VERSION }}
             APP_NAME=${{ vars.SERVICE }}
             JAVA_VERSION=${{ matrix.java-version }}
