@@ -71,7 +71,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom("com.omnixys:omnixys-bom:2.0.0")
+        mavenBom("com.omnixys:omnixys-bom:1.0.0")
     }
 }
 
@@ -79,9 +79,9 @@ extra["springCloudVersion"] = "2024.0.1"
 
 
 dependencies {
-    implementation("com.omnixys:omnixys-starter")
+    implementation("com.omnixys:starter")
 //    implementation("com.omnixys.kafka:kafka:dev")
-//    implementation("com.omnixys.logger:logger:dev")
+//    implementation("com.omnixys.logger:omnixys-logger:dev")
 //    implementation("com.omnixys.observability:omnixys-observability:dev")
 
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")

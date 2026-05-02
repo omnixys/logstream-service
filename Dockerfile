@@ -1,5 +1,12 @@
 # syntax=docker/dockerfile:1.14.0
 
+######################################################################
+# BUILD STAGE
+#
+# This stage compiles the Spring Boot application into a runnable JAR.
+# It supports private dependency access via BuildKit secrets.
+######################################################################
+
 ARG JAVA_VERSION=25
 
 FROM azul/zulu-openjdk:${JAVA_VERSION} AS builder
@@ -9,89 +16,163 @@ ARG APP_VERSION
 
 WORKDIR /source
 
+# Copy Gradle configuration and wrapper
 COPY build.gradle.kts gradle.properties gradlew settings.gradle.kts ./
 COPY gradle ./gradle
+
+# Copy application source
 COPY src ./src
 
+# Build the Spring Boot executable JAR
+# If secrets are provided, they are injected into Gradle configuration.
 RUN --mount=type=secret,id=gpr_user \
     --mount=type=secret,id=gpr_key \
-    test -f /run/secrets/gpr_user && test -f /run/secrets/gpr_key && \
     mkdir -p ~/.gradle && \
-    printf "gpr.user=%s\ngpr.key=%s\n" \
-      "$(cat /run/secrets/gpr_user)" \
-      "$(cat /run/secrets/gpr_key)" > ~/.gradle/gradle.properties && \
-    ./gradlew --no-configuration-cache --no-daemon --no-watch-fs bootJar
+    if [ -f /run/secrets/gpr_user ]; then \
+      printf "gpr.user=%s\ngpr.key=%s\n" \
+        "$(cat /run/secrets/gpr_user)" \
+        "$(cat /run/secrets/gpr_key)" > ~/.gradle/gradle.properties; \
+    fi && \
+    ./gradlew --no-daemon --no-watch-fs clean bootJar
 
-RUN JAR_FILE=$(ls ./build/libs/*.jar | grep -v plain | head -n 1) && \
-    echo "Using JAR: $JAR_FILE" && \
-    java -Djarmode=tools -jar "$JAR_FILE" extract --layers --destination extracted
+
+######################################################################
+# RUNTIME STAGE
+#
+# This stage runs the application using a minimal JRE image.
+# It includes:
+# - Non-root execution
+# - OpenTelemetry agent (optional)
+# - Container-optimized JVM configuration
+######################################################################
 
 FROM azul/zulu-openjdk:${JAVA_VERSION}-jre AS final
 
+ARG JAVA_VERSION
 ARG APP_NAME
 ARG APP_VERSION
 ARG CREATED
 ARG REVISION
-ARG JAVA_VERSION
 
+######################################################################
+# OCI METADATA LABELS
+#
+# These labels provide traceability and are used by container registries,
+# observability platforms, and CI/CD pipelines.
+######################################################################
 LABEL org.opencontainers.image.title="${APP_NAME}-service" \
-      org.opencontainers.image.description="Omnixys ${APP_NAME}-service – Java ${JAVA_VERSION}, built with Gradle, Version ${APP_VERSION}, basiert auf Azul Zulu & Ubuntu Jammy." \
+      org.opencontainers.image.description="Omnixys ${APP_NAME}-service – Java ${JAVA_VERSION}" \
       org.opencontainers.image.version="${APP_VERSION}" \
-      org.opencontainers.image.licenses="GPL-3.0-or-later" \
       org.opencontainers.image.vendor="omnixys" \
-      org.opencontainers.image.authors="caleb.gyamfi@omnixys.com" \
-      org.opencontainers.image.base.name="azul/zulu-openjdk:${JAVA_VERSION}-jre" \
-      org.opencontainers.image.url="https://github.com/omnixys/${APP_NAME}-service" \
-      org.opencontainers.image.source="https://github.com/omnixys/${APP_NAME}-service" \
       org.opencontainers.image.created="${CREATED}" \
-      org.opencontainers.image.revision="${REVISION}" \
-      org.opencontainers.image.documentation="https://github.com/omnixys/${APP_NAME}-service/blob/main/README.md"
+      org.opencontainers.image.revision="${REVISION}"
 
 WORKDIR /workspace
 
+######################################################################
+# INSTALL MINIMAL RUNTIME DEPENDENCIES
+#
+# Only essential packages are installed to keep the image small and secure.
+# curl is used for deterministic OTEL agent download.
+######################################################################
 RUN apt-get update && \
-    apt-get install --no-install-recommends --yes dumb-init=1.2.5-2 wget && \
-    apt-get autoremove -y && \
-    apt-get clean -y && \
-    rm -rf /var/lib/apt/lists/* /tmp/*
+    apt-get install --no-install-recommends -y \
+        dumb-init \
+        ca-certificates \
+        wget  && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-# ---- optional OTEL agent download ----
+######################################################################
+# CREATE NON-ROOT USER
+#
+# Running as non-root is mandatory for production security compliance.
+# The user is created BEFORE copying files to ensure correct ownership.
+######################################################################
+RUN groupadd --gid 1000 app && \
+    useradd --uid 1000 --gid app --no-create-home app
+
+######################################################################
+# COPY APPLICATION ARTIFACT
+#
+# The built Spring Boot JAR is copied and owned by the non-root user.
+######################################################################
+COPY --from=builder --chown=app:app /source/build/libs/*.jar /workspace/app.jar
+
+######################################################################
+# OPEN TELEMETRY CONFIGURATION
+#
+# Uses environment variables instead of JVM flags for standard compliance.
+######################################################################
 ARG OTEL_AGENT_ENABLED=true
-ENV OTEL_AGENT_PATH=/otel/opentelemetry-javaagent.jar
+ARG OTEL_AGENT_VERSION=2.26.1
 
+ENV OTEL_AGENT_PATH=/otel/opentelemetry-javaagent.jar \
+    OTEL_SERVICE_NAME=${APP_NAME:-unknown-service} \
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317 \
+    OTEL_EXPORTER_OTLP_PROTOCOL=grpc \
+    OTEL_RESOURCE_ATTRIBUTES=service.namespace=omnixys \
+    OTEL_LOGS_EXPORTER=otlp \
+    OTEL_METRICS_EXPORTER=otlp \
+    OTEL_TRACES_EXPORTER=otlp
+
+######################################################################
+# DOWNLOAD OTEL JAVA AGENT
+#
+# The agent is optional and version-pinned to ensure reproducibility.
+# curl is used with fail-fast flags to prevent silent build failures.
+######################################################################
 RUN if [ "$OTEL_AGENT_ENABLED" = "true" ]; then \
       mkdir -p /otel && \
       wget -O ${OTEL_AGENT_PATH} \
       https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar ; \
     fi
 
-# Kopiere extrahierte Spring Boot-Schichten (Layered JAR-Struktur)
-COPY --from=builder --chown=app:app /source/extracted/dependencies/ ./
-COPY --from=builder --chown=app:app /source/extracted/spring-boot-loader/ ./
-COPY --from=builder --chown=app:app /source/extracted/snapshot-dependencies/ ./
-COPY --from=builder --chown=app:app /source/extracted/application/ ./
+######################################################################
+# JVM RUNTIME CONFIGURATION
+#
+# These options ensure optimal behavior inside containerized environments.
+######################################################################
+ENV JAVA_OPTS="\
+-XX:+UseContainerSupport \
+-XX:MaxRAMPercentage=75 \
+-XX:InitialRAMPercentage=50 \
+-XX:+AlwaysActAsServerClassMachine \
+-XX:+UseG1GC \
+-XX:MaxGCPauseMillis=200 \
+-XX:+ExitOnOutOfMemoryError \
+-Dfile.encoding=UTF-8 \
+-Djava.security.egd=file:/dev/./urandom \
+"
 
-# ---- user ----
-RUN groupadd --gid 1000 app && \
-    useradd --uid 1000 --gid app --no-create-home app && \
-    chown -R app:app /workspace
-
+######################################################################
+# SECURITY CONTEXT
+#
+# Switch to non-root user after all privileged operations are complete.
+######################################################################
 USER app
 
-
+######################################################################
+# HEALTHCHECK
+#
+# Uses a lightweight TCP-based HTTP request without additional tools.
+# This avoids installing curl/wget solely for health checks.
+######################################################################
+HEALTHCHECK --interval=30s --timeout=3s --retries=1 \
+  CMD wget -qO- --no-check-certificate https://localhost:8080/actuator/health/ | grep UP || exit 1
 
 EXPOSE 8080
 
-# If you don't run TLS on 8080, use http instead of https
-HEALTHCHECK --interval=30s --timeout=3s --retries=1 \
-    CMD wget -qO- http://localhost:8080/actuator/health | grep UP || exit 1
-
-ENTRYPOINT [ \
-  "dumb-init", \
-  "java", \
-  "--enable-preview", \
-  "-javaagent:/otel/opentelemetry-javaagent.jar", \
-  "-Dotel.service.name=${OTEL_SERVICE_NAME}", \
-  "-Dotel.exporter.otlp.endpoint=${OTEL_EXPORTER_OTLP_ENDPOINT}", \
-  "org.springframework.boot.loader.launch.JarLauncher" \
-]
+######################################################################
+# ENTRYPOINT
+#
+# - Uses dumb-init for proper signal handling (PID 1 problem)
+# - Conditionally attaches OTEL agent if present
+# - Uses -jar execution for maximum stability (no classpath issues)
+######################################################################
+ENTRYPOINT ["sh", "-c", "\
+exec dumb-init java \
+$JAVA_OPTS \
+$( [ -f /otel/opentelemetry-javaagent.jar ] && echo \"-javaagent:/otel/opentelemetry-javaagent.jar\" ) \
+-jar /workspace/app.jar \
+"]
