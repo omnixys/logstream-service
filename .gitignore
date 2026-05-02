@@ -38,3 +38,5 @@ out/
 
 .env
 .secrets
+opentelemetry-javaagent.jar
+tmp
