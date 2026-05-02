@@ -3,6 +3,16 @@
 All notable changes in this project will be documented in this file.
 
 
+## [3.0.0](https://github.com/omnixys/logstream-service/compare/v2.0.0...v3.0.0) (2026-05-02)
+
+### Del
+
+* **Del:** Delete release-locale.yml ([](https://github.com/omnixys/logstream-service/commit/b7df76e6982a46c33d59818b471db9ec6501ec96))
+
+### Refactor
+
+* **Refactor:** Refactor Dockerfile; add OTEL agent & non-root run ([](https://github.com/omnixys/logstream-service/commit/7f7c960f817fb2e20592659d3d8f03ee22e804a2))
+
 ## [2.0.0](https://github.com/omnixys/logstream-service/compare/v1.0.4...v2.0.0) (2026-03-26)
 
 ### Dockerfile
