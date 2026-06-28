@@ -23,8 +23,6 @@ env:
   COSIGN_EXPERIMENTAL: 'true'
   IMAGE_NAME: ${{ secrets.DOCKER_USER }}/${{ vars.SERVICE }}-service
   IMAGE_NAME_REPOSITORY: ghcr.io/${{ github.repository }}
-  SERVICE: ${{ vars.SERVICE }}
-  CURRENT_VERSION: ${{ vars.CURRENT_VERSION }}
 
 jobs:
   ci:
@@ -196,17 +194,17 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ env.IMAGE_NAME }}:${{ env.CURRENT_VERSION }}
+            ${{ env.IMAGE_NAME }}:${{ vars.CURRENT_VERSION }}
             ${{ env.IMAGE_NAME }}:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ env.CURRENT_VERSION }}
+            org.opencontainers.image.version=${{ vars.CURRENT_VERSION }}
             org.opencontainers.image.description=Omnixys Microservice – ${{ env.IMAGE_NAME }}
             org.opencontainers.image.licenses=GPL-3.0-or-later
           build-args: |
             REVISION=${{ github.sha }}
             CREATED=${{ vars.CURRENT_DATE }}
-            APP_VERSION=${{ env.CURRENT_VERSION }}
+            APP_VERSION=${{ vars.CURRENT_VERSION }}
             APP_NAME=${{ vars.SERVICE }}
             JAVA_VERSION=${{ matrix.java-version }}
           cache-from: type=local,src=/tmp/.buildx-cache
@@ -217,7 +215,7 @@ jobs:
 
       - name: Sign Docker Image with cosign (OIDC/GitHub)
         run: |
-          cosign sign --yes --recursive ${{ env.IMAGE_NAME }}:${{ env.CURRENT_VERSION }}
+          cosign sign --yes --recursive ${{ env.IMAGE_NAME }}:${{ vars.CURRENT_VERSION }}
           cosign sign --yes --recursive ${{ env.IMAGE_NAME }}:latest
 
 
@@ -290,17 +288,17 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ${{ env.IMAGE_NAME_REPOSITORY }}:${{ env.CURRENT_VERSION }}
+            ${{ env.IMAGE_NAME_REPOSITORY }}:${{ vars.CURRENT_VERSION }}
             ${{ env.IMAGE_NAME_REPOSITORY }}:latest
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
-            org.opencontainers.image.version=${{ env.CURRENT_VERSION }}
+            org.opencontainers.image.version=${{ vars.CURRENT_VERSION }}
             org.opencontainers.image.description=Omnixys Microservice – ${{ env.IMAGE_NAME }}
             org.opencontainers.image.licenses=GPL-3.0-or-later
           build-args: |
             REVISION=${{ github.sha }}
             CREATED=${{ vars.CURRENT_DATE }}
-            APP_VERSION=${{ env.CURRENT_VERSION }}
+            APP_VERSION=${{ vars.CURRENT_VERSION }}
             APP_NAME=${{ vars.SERVICE }}
             JAVA_VERSION=${{ matrix.java-version }}
           cache-from: type=local,src=/tmp/.buildx-cache
@@ -311,5 +309,5 @@ jobs:
 
       - name: Sign Docker Image with cosign (OIDC/GitHub)
         run: |
-          cosign sign --yes --recursive ${{ env.IMAGE_NAME_REPOSITORY }}:${{ env.CURRENT_VERSION }}
+          cosign sign --yes --recursive ${{ env.IMAGE_NAME_REPOSITORY }}:${{ vars.CURRENT_VERSION }}
           cosign sign --yes --recursive ${{ env.IMAGE_NAME_REPOSITORY }}:latest
