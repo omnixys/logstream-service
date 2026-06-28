@@ -1,10 +1,10 @@
 
 # table = Schluessel/Wert-Paare
 [versions]
-javaVersion = "25"
+javaVersion = "26"
 
-springBoot = "4.0.3"
-springBootPlugin = "4.0.3"
+springBoot = "4.1.0"
+springBootPlugin = "4.1.0"
 bouncycastle = "1.83"
 lombokMapstructBinding = "0.2.0"
 mapstruct = "1.6.3"

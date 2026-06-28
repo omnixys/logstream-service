@@ -16,6 +16,9 @@ server:
   shutdown: graceful
 
 omnixys:
+  security:
+      internal-gateway:
+        token: ${INTERNAL_GATEWAY_TOKEN}
   observability:
     metrics:
       prometheus-enabled: true
@@ -27,7 +30,7 @@ omnixys:
       sampling-probability: 1.0
 
     otlp:
-      endpoint: http://localhost:4318/v1/traces
+      endpoint: http://${app.tracing.tempo}:4318/v1/traces
 
   kafka:
     enabled: true
@@ -47,7 +50,7 @@ omnixys:
 
   logger:
     enabled: false
-    service-name: address
+    service-name: logsream
 
     kafka:
       enabled: true
@@ -69,7 +72,7 @@ logstream:
       - logstream.seat
       - logstream.notification
   loki:
-    url: http://localhost:3100/loki/api/v1/push
+    url: http://${app.tracing.loki}:3100/loki/api/v1/push
   retry:
     attempts: 3
 
@@ -128,8 +131,9 @@ app:
     port: ${VALKEY_PORT}
     password: ${VALKEY_PASSWORD}
 
-#  tracing:
-#    tempo: ${TEMPO_HOST}
+  tracing:
+    tempo: ${TEMPO_HOST}
+    loki: ${LOKI_HOST}
 
   kafka:
     host: ${KAFKA_HOST}

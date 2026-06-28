@@ -7,7 +7,7 @@
 # It supports private dependency access via BuildKit secrets.
 ######################################################################
 
-ARG JAVA_VERSION=25
+ARG JAVA_VERSION=26
 
 FROM azul/zulu-openjdk:${JAVA_VERSION} AS builder
 

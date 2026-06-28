@@ -1,78 +1,43 @@
 package com.omnixys.logstream.consumer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 import com.omnixys.kafka.annotation.KafkaEvent;
 import com.omnixys.kafka.model.KafkaEnvelope;
 import com.omnixys.logger.model.LogDTO;
 import com.omnixys.logstream.client.LokiClient;
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.SpanKind;
-import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Context;
-import io.opentelemetry.context.Scope;
-import io.opentelemetry.context.propagation.TextMapGetter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Kafka handler for logstream ingestion.
- */
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class LogstreamKafkaHandler {
 
+    private static final String DLQ_TOPIC = "logstream-dlq";
+
     private final LokiClient lokiClient;
     private final ObjectMapper objectMapper;
-
-    private static final TextMapGetter<Map<String, String>> GETTER =
-            new TextMapGetter<>() {
-                @Override
-                public Iterable<String> keys(Map<String, String> carrier) {
-                    return carrier.keySet();
-                }
-
-                @Override
-                public String get(Map<String, String> carrier, String key) {
-                    return carrier.get(key);
-                }
-            };
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
     @KafkaEvent(topic = "logstream.input")
     public void handle(KafkaEnvelope<LogDTO> envelope, Map<String, String> headers) {
 
-
         log.info("CONSUMER Envelope {}", envelope);
-            log.info("CONSUMER HEADER {}", headers);
+        log.info("CONSUMER HEADER {}", headers);
 
-
-        Tracer tracer = GlobalOpenTelemetry.getTracer("omnixys.kafka");
-
-        // 🔥 CONTEXT EXTRACT
-        Context parentContext = GlobalOpenTelemetry.get()
-                .getPropagators()
-                .getTextMapPropagator()
-                .extract(Context.current(), headers, GETTER);
-
-        Span span = tracer.spanBuilder("kafka logstream consume")
-                .setSpanKind(SpanKind.CONSUMER)
-                .setParent(parentContext)
-                .startSpan();
-
-
-        LogDTO dto = objectMapper.convertValue(
-                envelope.payload(),
-                LogDTO.class
-        );
-
-
-        try (Scope scope = span.makeCurrent()) {
+        try {
+            LogDTO dto = objectMapper.convertValue(
+                    envelope.payload(),
+                    LogDTO.class
+            );
 
             Map<String, String> labels = new HashMap<>();
             labels.put("service", safe(dto.service()));
@@ -93,13 +58,31 @@ public class LogstreamKafkaHandler {
             lokiClient.push(new Object[]{stream});
 
         } catch (Exception e) {
-            span.recordException(e);
-            span.setAttribute("error", true);
             log.error("Logstream processing failed", e);
+            sendToDlq(envelope, headers, e);
         }
     }
 
-    private String resolveTimestamp(String timestamp) {
+    private void sendToDlq(KafkaEnvelope<LogDTO> envelope, Map<String, String> headers, Exception error) {
+        try {
+            String json = objectMapper.writeValueAsString(envelope);
+            ProducerRecord<String, String> record = new ProducerRecord<>(DLQ_TOPIC, json);
+
+            headers.forEach((key, value) ->
+                    record.headers().add(key, value.getBytes(StandardCharsets.UTF_8))
+            );
+            record.headers().add("x-error-type", error.getClass().getName().getBytes(StandardCharsets.UTF_8));
+            record.headers().add("x-error-message", (error.getMessage() != null ? error.getMessage() : "").getBytes(StandardCharsets.UTF_8));
+            record.headers().add("x-original-topic", "logstream.input".getBytes(StandardCharsets.UTF_8));
+
+            kafkaTemplate.send(record);
+            log.info("Sent failed record to DLQ topic={}", DLQ_TOPIC);
+        } catch (Exception dlqError) {
+            log.error("Failed to send record to DLQ topic={}", DLQ_TOPIC, dlqError);
+        }
+    }
+
+    private static String resolveTimestamp(String timestamp) {
         try {
             if (timestamp != null) {
                 return String.valueOf(Instant.parse(timestamp).toEpochMilli() * 1_000_000);
@@ -109,7 +92,7 @@ public class LogstreamKafkaHandler {
         return String.valueOf(System.currentTimeMillis() * 1_000_000);
     }
 
-    private String safe(String value) {
+    private static String safe(String value) {
         return value != null ? value : "unknown";
     }
 }

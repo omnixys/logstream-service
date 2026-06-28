@@ -71,7 +71,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom("com.omnixys:omnixys-bom:1.0.0")
+        mavenBom("com.omnixys:bom:1.0.0")
     }
 }
 
@@ -80,11 +80,7 @@ extra["springCloudVersion"] = "2024.0.1"
 
 dependencies {
     implementation("com.omnixys:starter")
-//    implementation("com.omnixys.kafka:kafka:dev")
-//    implementation("com.omnixys.logger:omnixys-logger:dev")
-//    implementation("com.omnixys.observability:omnixys-observability:dev")
 
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
     /**--------------------------------------------------------------------------------------------------------------------
      * SECURITY
      * --------------------------------------------------------------------------------------------------------------------*/
@@ -135,14 +131,7 @@ dependencies {
     annotationProcessor("org.hibernate:hibernate-jpamodelgen:${libs.versions.hibernateJpamodelgen.get()}")
     implementation("io.github.cdimascio:dotenv-java:${libs.versions.dotenv.get()}") // Bibliothek für .env-Datei
 
-    /**------------------------------------------------------------------------------------------------------------------------
-     * MESSANGER
-     * --------------------------------------------------------------------------------------------------------------------*/
-    implementation("com.fasterxml.jackson.core:jackson-databind")
-    implementation("com.fasterxml.jackson.module:jackson-module-parameter-names")
-
-// cache
-    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    // cache — managed via starter
 
 
     }
