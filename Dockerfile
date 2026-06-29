@@ -110,8 +110,7 @@ ARG OTEL_AGENT_VERSION=2.26.1
 
 ENV OTEL_AGENT_PATH=/otel/opentelemetry-javaagent.jar \
     OTEL_SERVICE_NAME=${APP_NAME:-unknown-service} \
-    OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317 \
-    OTEL_EXPORTER_OTLP_PROTOCOL=grpc \
+    OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318 \
     OTEL_RESOURCE_ATTRIBUTES=service.namespace=omnixys \
     OTEL_LOGS_EXPORTER=otlp \
     OTEL_METRICS_EXPORTER=otlp \
