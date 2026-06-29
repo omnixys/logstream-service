@@ -129,15 +129,12 @@ jobs:
       - name: Read version
         id: read_version
         run: |
-          VERSION=$(node -p "require('./package.json').version")
+          VERSION=$(grep '^version=' gradle.properties | cut -d'=' -f2)
           DATE=$(date -u +'%Y-%m-%d')
-
-          echo "CURRENT_VERSION=$VERSION" >> $GITHUB_ENV
-          echo "CURRENT_DATE=$DATE" >> $GITHUB_ENV
-
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "date=$DATE" >> $GITHUB_OUTPUT
-
+      
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "date=$DATE" >> "$GITHUB_OUTPUT"
+      
 
   push-docker:
     name: 🐳 Build & Push Multi-Arch Images (Docker)
